@@ -1,3 +1,28 @@
 body {
-    background-color: lightblue;
+    margin: 0;
+    background-color: #DECDC6;
   }
+
+.MainLogo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  height: 100px;
+  width: 300px;
+  object-fit: cover;
+}
+
+.title {
+  width: 100vmax;
+  background-color: #151C48;
+}
+
+.content {
+  background-color: white;
+  height: 80vmax;
+  width: 90vmax;
+  margin-top: 2vmax;
+  margin-left: 5vmax;
+  border-radius: 25px;
+}
