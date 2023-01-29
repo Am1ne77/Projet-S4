@@ -1,4 +1,5 @@
 #include <err.h>
+#include <stdio.h>
 #include "vector.h"
 
 struct vector *vector_new()
@@ -81,3 +82,12 @@ int vector_remove(struct vector *v, size_t i, int *x)
     return 1;
 }
 
+void vector_print(struct vector* v)
+{
+    printf("[ ");
+    for(size_t i = 0; i < v->size; i++)
+    {
+        printf("%i ", v->data[i]);
+    }
+    printf("]\n");
+}

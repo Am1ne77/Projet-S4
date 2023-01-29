@@ -61,6 +61,6 @@ void vector_insert(struct vector *v, size_t i, int x);
 int vector_remove(struct vector *v, size_t i, int *x);
 
 // Prints the vector v
-void print_vector(struct vector* v);
+void vector_print(struct vector* v);
 
 #endif
