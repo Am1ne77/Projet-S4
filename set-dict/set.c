@@ -22,7 +22,7 @@ uint32_t hash(char *key)
   return hash;
 }
 
-// Return a new set of capacity capacity
+// Return a new set of 'capacity' capacity
 set* new_set(size_t capacity)
 {
     set* set;
@@ -52,7 +52,7 @@ set* new_set(size_t capacity)
 }
 
 
-// free a set
+// Free a set
 void free_set(set* set)
 {
     for(size_t i = 0; i < set->capacity; ++i)
@@ -70,8 +70,8 @@ void free_set(set* set)
 }
 
 
-// return 1 if key with hash i is in the set, 0 otherwise
-size_t search(set* set, char* key, uint32_t i)
+// Return 1 if key with hash i is in the set, 0 otherwise
+size_t search_set(set* set, char* key, uint32_t i)
 {
     for(data* curr = (set->elements[i])->next; curr != NULL; curr = curr->next)
     {
@@ -82,12 +82,13 @@ size_t search(set* set, char* key, uint32_t i)
 }
 
 
-// insert key in set if key not already in, nothing otherwise
-set* insert(set* set, char* key)
+// Return the set with key inserted in set
+// if key already in, nothing is done to the set
+set* insert_set(set* set, char* key)
 {
     uint32_t i = hash(key) % (set->capacity);
 
-    if(search(set, key, i))
+    if(search_set(set, key, i))
         return set;
 
     // if threshold is reached double the capacity
@@ -108,7 +109,7 @@ set* insert(set* set, char* key)
 }
 
 
-// double the size of the set and recalculate new hash for all the elements
+// Double the size of the set and recalculate new hash for all the elements
 void expand_set(set** p_set)
 {
     // new set with double the capacity
@@ -119,7 +120,7 @@ void expand_set(set** p_set)
         // reinsert the keys of the old set in the new set (new hash value)
         data* curr = (*p_set)->elements[i]->next;
         while(curr != NULL){
-            n_set = insert(n_set, curr->key);
+            n_set = insert_set(n_set, curr->key);
             curr = curr->next;
         }
     }
@@ -128,8 +129,8 @@ void expand_set(set** p_set)
     *p_set = n_set;
 }
 
-// delete the key in the set, do nothing if key not in the set
-void delete(set* set, char* key)
+// Delete the key in the set, do nothing if key not in the set
+void delete_set(set* set, char* key)
 {
     uint32_t i = hash(key) % (set->capacity);
 
@@ -137,7 +138,7 @@ void delete(set* set, char* key)
     data* past = set->elements[i];
     while(curr != NULL)
     {
-        // if key found
+        // key found
         if(strcmp(curr->key,key) == 0){
             past->next = curr->next;
             free(curr);
@@ -153,23 +154,39 @@ void delete(set* set, char* key)
     return;
 }
 
-void set_union(set** set1, set* set2)
+// Return and delete random key from the set
+char* pop_set(set* set)
 {
-    if((*set1)->capacity < set2->capacity)
-        set_union(&set2, *set1);
+    if(set->size == 0)
+        errx(1, "pop() : cannot pop an element from an empty set !");
 
-    else
+    char* key;
+    for(size_t i = 0; i < set->capacity; ++i)
     {
-        for(size_t i = 0; i < set2->capacity; ++i)
+        data* curr = set->elements[i]->next;
+        if(curr != NULL) //first data found in the set
         {
-            data* curr = set2->elements[i]->next;
-            while(curr != NULL){
-                insert(*set1, curr->key);
-                curr = curr->next;
-            }
+            key = curr->key;
+            delete_set(set, key);
+            break;
         }
-    free(set2);
     }
+    return key;
+}
+
+// Return, in set1 the union of the two sets
+// set2 is freed by the function
+void union_set(set** set1, set* set2)
+{
+    for(size_t i = 0; i < set2->capacity; ++i)
+    {
+        data* curr = set2->elements[i]->next;
+        while(curr != NULL){
+            *set1 = insert_set(*set1, curr->key);
+            curr = curr->next;
+        }
+    }
+    free_set(set2);
 }
 
 // Not so pretty print of a set
