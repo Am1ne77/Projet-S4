@@ -32,9 +32,9 @@ size_t search_set(set* set, char* key, uint32_t i);
 
 // Return the set with key inserted in set
 // if key already in, nothing is done to the set
-set* insert_set(set* set, char* key);
+void insert_set(set** set, char* key);
 
-// Double the size of the set and recalculate new hash for all the elements
+// Double the size of the set
 void expand_set(set** old_set);
 
 // Delete the key in the set, do nothing if key not in the set

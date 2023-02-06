@@ -84,32 +84,28 @@ size_t search_set(set* set, char* key, uint32_t i)
 
 // Return the set with key inserted in set
 // if key already in, nothing is done to the set
-set* insert_set(set* set, char* key)
+void insert_set(set** set, char* key)
 {
-    uint32_t i = hash(key) % (set->capacity);
+    uint32_t i = hash(key) % ((*set)->capacity);
 
-    if(search_set(set, key, i))
-        return set;
+    if(search_set(*set, key, i))
+        return;
 
-    // if threshold is reached double the capacity
-    if(100 * set->size / set->capacity >= 75)
-        expand_set(&set);
+    if(100 * (*set)->size / (*set)->capacity >= 75)
+        expand_set(set);
 
     data* new_data = malloc(sizeof(struct data));
     new_data->key = key;
     new_data->hkey = i;
-    new_data->next = set->elements[i]->next;
+    new_data->next = (*set)->elements[i]->next;
 
-    set->elements[i]->next = new_data;
+    (*set)->elements[i]->next = new_data;
 
     if(new_data->next == NULL)
-        set->size+=1;
-
-    return set;
+       (*set)->size += 1;
 }
 
-
-// Double the size of the set and recalculate new hash for all the elements
+// Double the size of a set
 void expand_set(set** p_set)
 {
     // new set with double the capacity
@@ -120,7 +116,7 @@ void expand_set(set** p_set)
         // reinsert the keys of the old set in the new set (new hash value)
         data* curr = (*p_set)->elements[i]->next;
         while(curr != NULL){
-            n_set = insert_set(n_set, curr->key);
+            insert_set(&n_set, curr->key);
             curr = curr->next;
         }
     }
@@ -182,7 +178,7 @@ void union_set(set** set1, set* set2)
     {
         data* curr = set2->elements[i]->next;
         while(curr != NULL){
-            *set1 = insert_set(*set1, curr->key);
+            insert_set(set1, curr->key);
             curr = curr->next;
         }
     }
