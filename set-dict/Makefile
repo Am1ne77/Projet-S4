@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -g -fsanitize=address
 LDFLAGS =
 LDLIBS =
 
-SRC = set.c main.c
+SRC = set.c dict.c main.c
 OBJ = ${SRC:.c=.o}
 
 main: ${OBJ}
