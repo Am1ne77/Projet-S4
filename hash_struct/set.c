@@ -51,7 +51,6 @@ set* new_set(size_t capacity)
     return set;
 }
 
-
 // Free a set
 void free_set(set* set)
 {
@@ -189,24 +188,22 @@ void union_set(set** set1, set* set2)
 void print_set(set* set)
 {
     printf("---------set---------\n");
-    printf("capacity = %zu ; size = %zu\n", set->capacity, set->size);
+    printf("capacity = %zu ; size = %zu\n\n", set->capacity, set->size);
     for(size_t i = 0; i < set->capacity; ++i)
     {
-        printf("|");
+        printf("Bucket %zu: ", i + 1);
         data* curr = set->elements[i];
         do
         {
             curr = curr->next;
             if(curr == NULL)
-                printf(" ");
+                printf("[empty] ");
             else
-                printf("%s", curr->key);
-            printf("|");
+                printf("[%s] ", curr->key);
         }while(curr != NULL);
         printf("\n");
     }
 
     printf("---------end---------\n");
-    printf("\n");
 }
 

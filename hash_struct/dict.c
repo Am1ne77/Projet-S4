@@ -162,65 +162,27 @@ void delete_dict(dict* d, char* key)
     }
     return;
 }
-/*
-// Return and delete random key from the set
-char* pop_dict(dict* d)
-{
-    if(d->size == 0)
-        errx(1, "pop() : cannot pop an element from an empty set !");
 
-    char* key;
-    for(size_t i = 0; i < d->capacity; ++i)
-    {
-        pair* curr = set->elements[i]->next;
-        if(curr != NULL) //first data found in the set
-        {
-            key = curr->key;
-            delete_set(set, key);
-            break;
-        }
-    }
-    return key;
-}
-
-// Return, in set1 the union of the two sets
-// set2 is freed by the function
-void union_set(set** set1, set* set2)
-{
-    for(size_t i = 0; i < set2->capacity; ++i)
-    {
-        data* curr = set2->elements[i]->next;
-        while(curr != NULL){
-            insert_set(set1, curr->key);
-            curr = curr->next;
-        }
-    }
-    free_set(set2);
-}
-
-// Not so pretty print of a set
-void print_set(set* set)
+// Not so pretty print of a dict
+void print_dict(dict* d)
 {
     printf("---------set---------\n");
-    printf("capacity = %zu ; size = %zu\n", set->capacity, set->size);
-    for(size_t i = 0; i < set->capacity; ++i)
+    printf("capacity = %zu ; size = %zu\n\n", d->capacity, d->size);
+    for(size_t i = 0; i < d->capacity; ++i)
     {
-        printf("|");
-        data* curr = set->elements[i];
+        printf("Bucket %zu: ", i + 1);
+        pair* curr = d->elements[i];
         do
         {
             curr = curr->next;
             if(curr == NULL)
-                printf(" ");
+                printf("[empty] ");
             else
-                printf("%s", curr->key);
-            printf("|");
+                printf("[%s | %s] ", curr->key, curr->value);
         }while(curr != NULL);
         printf("\n");
     }
 
     printf("---------end---------\n");
-
-    printf("\n");
 }
-*/
+

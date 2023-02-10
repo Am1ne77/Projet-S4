@@ -4,10 +4,11 @@
 #include <err.h>
 #include <string.h>
 #include "set.h"
+#include "dict.h"
 
 int main()
 {
-    /*
+    
     set* set1 = new_set(4);
     insert_set(&set1, "France");
     insert_set(&set1, "Spain");
@@ -23,7 +24,6 @@ int main()
     printf("pop = %s\n", pop_set(set1));
     print_set(set1);
     free_set(set1);
-    */
 
     return 0;
 }

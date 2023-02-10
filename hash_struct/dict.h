@@ -7,9 +7,9 @@
 typedef struct pair
 {
     uint32_t hkey;
-    char *key;
-    char *value;
-    struct pair *next;
+    char* key;
+    char* value;
+    struct pair* next;
 }pair;
 
 typedef struct dict
@@ -40,15 +40,6 @@ void expand_dict(dict** old_dict);
 
 // Delete the key in the dict, do nothing if key not in the dict
 void delete_dict(dict* d, char* key);
-/*
-// Return and delete random key from the dict
-char* pop_dict(dict* d);
 
-// Return, in set1 the union of the two sets
-// set2 is freed by the function
-void union_set(set** set1, set* set2);
-
-// Not so pretty print of a set
-void print_set(set* set);
-*/
 #endif
+
