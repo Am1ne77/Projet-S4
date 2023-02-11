@@ -6,12 +6,13 @@
 
 typedef struct ENFA
 {
-    struct set* allstates;
+    struct set* all_states;
     struct set* initial_states;
     struct set* final_states;
     struct set* alphabet;
     struct dict* edges;
     struct dict* next_states;
+    struct dict* labels;
 }ENFA;
 
 void add_state(struct ENFA* enfa);

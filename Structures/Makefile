@@ -2,7 +2,7 @@
 
 CC = gcc -fsanitize=address
 CPPFLAGS = -MMD -g
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -D _GNU_SOURCE
 LDFLAGS =
 LDLIBS =
 
