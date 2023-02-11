@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra
 LDFLAGS =
 LDLIBS =
 
-SRC = main.c vector.c
+SRC = main.c vector.c dict.c set.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
