@@ -28,7 +28,7 @@ set* new_set(size_t capacity);
 void free_set(set* set);
 
 // Return 1 if key with hash i is in the set, 0 otherwise
-size_t search_set(set* set, char* key, uint32_t i);
+size_t search_set(set* set, char* key);
 
 // Return the set with key inserted in set
 // if key already in, nothing is done to the set

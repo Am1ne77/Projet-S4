@@ -10,7 +10,7 @@ typedef struct ENFA
     struct set* initial_states;
     struct set* final_states;
     struct set* alphabet;
-    struct dict* edges;
+    struct set* edges;
     struct dict* next_states;
     struct dict* labels;
 }ENFA;
