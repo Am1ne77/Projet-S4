@@ -8,7 +8,7 @@ typedef struct pair
 {
     uint32_t hkey;
     char* key;
-    char* value;
+    void* value;
     struct pair* next;
 }pair;
 
@@ -33,7 +33,7 @@ size_t search_dict(dict* d, char* key, uint32_t i);
 
 // Return the dict with key inserted in dict
 // if key already in, nothing is done to the dict
-void insert_dict(dict** d, char* key, char* value);
+void insert_dict(dict** d, char* key, void* value);
 
 // Double the size of the dict
 void expand_dict(dict** old_dict);

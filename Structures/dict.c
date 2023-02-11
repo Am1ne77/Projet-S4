@@ -96,7 +96,7 @@ char* get_value(dict* d, char* key)
 
 // Return the set with key inserted in set
 // if key already in, nothing is done to the set
-void insert_dict(dict** d, char* key, char* value)
+void insert_dict(dict** d, char* key, void* value)
 {
     uint32_t i = hash_d(key) % ((*d)->capacity);
 
@@ -178,7 +178,7 @@ void print_dict(dict* d)
             if(curr == NULL)
                 printf("[empty] ");
             else
-                printf("[%s | %s] ", curr->key, curr->value);
+                printf("[%s | %p] ", curr->key, curr->value);
         }while(curr != NULL);
         printf("\n");
     }

@@ -207,3 +207,19 @@ void print_set(set* set)
     printf("---------end---------\n");
 }
 
+//Returns the max value of a set
+char* max_set(set* set)
+{
+    char* max = "";
+    for(size_t i = 0; i < set->capacity; ++i)
+    {
+        data* curr = set->elements[i];
+        do
+        {
+            curr = curr->next;
+            if(strcmp(curr->key, max) > 0)
+                max = curr->key;
+        }while(curr != NULL);
+    }
+    return max;
+}

@@ -6,6 +6,7 @@
 #include <string.h>
 #include "set.h"
 #include "dict.h"
+#include "automaton.h"
 
 int main()
 {

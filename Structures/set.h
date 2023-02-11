@@ -50,5 +50,8 @@ void union_set(set** set1, set* set2);
 // Not so pretty print of a set
 void print_set(set* set);
 
+// Returns the max value of a set
+char* max_set(set* set);
+
 #endif
 
