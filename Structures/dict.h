@@ -14,6 +14,7 @@ typedef struct pair
 
 typedef struct dict
 {
+    size_t len;
     size_t size;
     size_t capacity;
     struct pair **elements;

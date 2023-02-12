@@ -68,7 +68,9 @@ int main()
     ENFA* enfa = new_enfa(all_states, initial_states, final_states,
             alphabet, edges, labels);
 
-    //add_state_enfa(enfa);
+    add_state_enfa(enfa);
+
+    free_enfa(enfa);
 
     return 0;
 }

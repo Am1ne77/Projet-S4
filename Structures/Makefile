@@ -1,6 +1,6 @@
 # Makefile
 
-CC = gcc -fsanitize=address
+CC = gcc
 CPPFLAGS = -MMD -g
 CFLAGS = -Wall -Wextra -D _GNU_SOURCE
 LDFLAGS =

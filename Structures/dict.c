@@ -32,6 +32,7 @@ dict* new_dict(size_t capacity)
 
     d->capacity = capacity;
     d->size = 0;
+    d->len = 0;
 
     d->elements = malloc(sizeof(struct pair*) * capacity);
     if(d->elements == NULL)
@@ -116,6 +117,7 @@ void insert_dict(dict** d, char* key, void* value)
 
     if(new_pair->next == NULL)
        (*d)->size += 1;
+    (*d)->len++;
 }
 
 // Double the size of a set
@@ -154,6 +156,8 @@ void delete_dict(dict* d, char* key)
 
             if(d->elements[i]->next == NULL)
                 d->size = d->size -1;
+
+            d->len--;
 
             break;
         }
