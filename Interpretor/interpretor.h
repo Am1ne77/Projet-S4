@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <err.h>
+#include "../Structures/queue.h"
 
 enum tokentype
 {
@@ -28,6 +29,6 @@ typedef struct token
 } Token;
 
 Token** lexer(char *str);
+Queue* shunting_yard(Token** input);
 
-// inserer struct AST parser(token *t_str);
 #endif
