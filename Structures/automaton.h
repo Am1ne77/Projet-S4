@@ -20,4 +20,6 @@ ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
 
 void add_state_enfa(struct ENFA* enfa);
 
+void free_enfa(struct ENFA* enfa);
+
 #endif

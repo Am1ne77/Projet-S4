@@ -41,5 +41,8 @@ void expand_dict(dict** old_dict);
 // Delete the key in the dict, do nothing if key not in the dict
 void delete_dict(dict* d, char* key);
 
+// Return the value assiociated with the key
+void* get_value_dict(dict* d, char* key);
+
 #endif
 

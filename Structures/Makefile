@@ -4,7 +4,7 @@ CC = gcc -fsanitize=address
 CPPFLAGS = -MMD -g
 CFLAGS = -Wall -Wextra -D _GNU_SOURCE
 LDFLAGS =
-LDLIBS =
+LDLIBS = -lm
 
 SRC = main.c vector.c dict.c set.c automaton.c
 OBJ = ${SRC:.c=.o}

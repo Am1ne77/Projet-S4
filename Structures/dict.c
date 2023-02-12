@@ -82,7 +82,7 @@ size_t search_dict(dict* d, char* key, uint32_t i)
 }
 
 // Return the value assiociated with the key
-char* get_value(dict* d, char* key)
+void* get_value_dict(dict* d, char* key)
 {
     uint32_t i = hash_d(key) % (d->capacity);
     for(pair* curr = (d->elements[i])->next; curr != NULL; curr = curr->next)

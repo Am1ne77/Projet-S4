@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "set.h"
 #include "dict.h"
 #include "automaton.h"
@@ -26,11 +27,11 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         enfa->labels = labels;
     else
     {
+        size_t l = log10(enfa->all_states->len) + 2;
+        char num[l];
         for(size_t i = 0; i < enfa->all_states->len; ++i)
         {
-            char num[20];
             sprintf(num, "%zu", i);
-            printf("%s\n", num);
             insert_dict(&(labels), num, num);
         }
         enfa->labels = labels;
@@ -48,7 +49,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
                 while(cur_alp != NULL)
                 {
                     char* n;
-                    asprintf(&n, "%zu+%zu", i, j);
+                    asprintf(&n, "%s+%s", cur_state->key, cur_alp->key);
                     insert_dict(&(enfa->next_states), n, new_set(4));
                     cur_alp = cur_alp->next;
                 }
@@ -57,6 +58,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         }
     }
 
+    enfa->edges = edges;
     for(size_t i = 0; i < edges->capacity; ++i)
     {
         data* curr = edges->elements[i]->next;
@@ -79,7 +81,8 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
                     {
                         char* n;
                         asprintf(&n, "%s+%s", first, second);
-                        insert_dict(&(enfa->next_states), n, ptr);
+                        set* s = get_value_dict(enfa->next_states, n);
+                        insert_set(&s, ptr);
                     }
                 }
             }
@@ -112,4 +115,26 @@ void add_state_enfa(struct ENFA* enfa)
         }
     }
     insert_dict(&(enfa->labels), name_state, name_state);
+}
+
+
+void free_enfa(struct ENFA* enfa)
+{
+    free_set(enfa->all_states);
+    free_set(enfa->initial_states);
+    free_set(enfa->final_states);
+    free_set(enfa->alphabet);
+    free_set(enfa->edges);
+    for(size_t i = 0; i < enfa->next_states->capacity; ++i)
+    {
+        pair* s = enfa->next_states->elements[i]->next;
+        while(s != NULL)
+        {
+            free_set(s->value);
+            s = s->next;
+        }
+    }
+    free_dict(enfa->next_states);
+    free_dict(enfa->labels);
+    free(enfa);
 }
