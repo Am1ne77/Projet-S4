@@ -13,6 +13,7 @@ typedef struct data
 
 typedef struct set
 {
+    size_t len;
     size_t size;
     size_t capacity;
     struct data **elements;

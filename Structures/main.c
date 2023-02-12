@@ -40,5 +40,42 @@ int main()
     free_set(set1);
     */
 
+    set* all_states = new_set(4);
+    insert_set(&all_states, "0");
+    insert_set(&all_states, "1");
+    insert_set(&all_states, "2");
+    insert_set(&all_states, "3");
+    insert_set(&all_states, "4");
+
+    set* initial_states = new_set(4);
+    insert_set(&initial_states, "0");
+
+    set* final_states = new_set(4);
+    insert_set(&final_states, "4");
+
+    set* alphabet = new_set(4);
+    insert_set(&alphabet, "a");
+    insert_set(&alphabet, "b");
+
+    set* edges = new_set(4);
+    insert_set(&edges, "0+a+1");
+    insert_set(&edges, "1+b+2");
+    insert_set(&edges, "2+b+3");
+    insert_set(&edges, "3+a+4");
+
+    dict* labels = new_dict(4);
+
+    ENFA* enfa = new_enfa(all_states, initial_states, final_states,
+            alphabet, edges, labels);
+
+    add_state_enfa(enfa);
+
+    free_set(all_states);
+    free_set(initial_states);
+    free_set(final_states);
+    free_set(alphabet);
+    free_set(edges);
+    free_dict(labels);
+
     return 0;
 }

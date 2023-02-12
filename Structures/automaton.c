@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "string.h"
+#include <string.h>
 #include "set.h"
 #include "dict.h"
 #include "automaton.h"
 
-const char delim[1] = "+";
+const char delim[2] = "+";
 
 struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         set* alphabet, set* edges, dict* labels)
@@ -13,7 +13,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
     enfa = malloc(sizeof(struct ENFA));
     enfa->all_states = all_states;
     enfa->alphabet = alphabet;
-    insert_set(&(enfa->alphabet), "");
+    insert_set(&(enfa->alphabet), "ɛ");
     enfa->initial_states = initial_states;
     enfa->final_states = final_states;
     if(enfa->initial_states->size == 0)
@@ -30,6 +30,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         {
             char num[20];
             sprintf(num, "%zu", i);
+            printf("%s\n", num);
             insert_dict(&(labels), num, num);
         }
         enfa->labels = labels;
@@ -61,16 +62,20 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         data* curr = edges->elements[i]->next;
         while(curr != NULL)
         {
-            char* ptr = strtok(curr->key ,delim);
-            if(search_set(enfa->all_states, ptr))
+            char* ptr;
+            size_t l = strlen(curr->key) + 1;
+            char cpy[l];
+            strcpy(cpy, curr->key);
+            ptr  = strtok(cpy ,delim);
+            if(ptr != NULL && search_set(enfa->all_states, ptr))
             {
                 char* first = ptr;
-                char* ptr = strtok(NULL ,delim);
-                if(search_set(enfa->alphabet, ptr))
+                ptr = strtok(NULL ,delim);
+                if(ptr != NULL && search_set(enfa->alphabet, ptr))
                 {
                     char* second = ptr;
-                    char* ptr = strtok(NULL ,delim);
-                    if(search_set(enfa->all_states, ptr))
+                    ptr = strtok(NULL ,delim);
+                    if(ptr != NULL && search_set(enfa->all_states, ptr))
                     {
                         char* n;
                         asprintf(&n, "%s+%s", first, second);
@@ -87,10 +92,12 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
 
 
 
-void add_state(struct ENFA* enfa)
+void add_state_enfa(struct ENFA* enfa)
 {
-    int add_state = atoi(max_set(enfa->all_states) + 1);
-    char name_state[25];
+    char* max = max_set(enfa->all_states);
+    int add_state = atoi(max) + 1;
+    size_t l = strlen(max);
+    char name_state[l+1];
     sprintf(name_state, "%i", add_state);
     insert_set(&(enfa->all_states), name_state);
     for(size_t i = 0; i < enfa->alphabet->capacity; ++i)

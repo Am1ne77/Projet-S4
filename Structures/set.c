@@ -32,6 +32,7 @@ set* new_set(size_t capacity)
 
     set->capacity = capacity;
     set->size = 0;
+    set->len = 0;
 
     set->elements = malloc(sizeof(struct data*) * capacity);
     if(set->elements == NULL)
@@ -103,6 +104,7 @@ void insert_set(set** set, char* key)
 
     if(new_data->next == NULL)
        (*set)->size += 1;
+    (*set)->len++;
 }
 
 // Double the size of a set
@@ -138,6 +140,8 @@ void delete_set(set* set, char* key)
         if(strcmp(curr->key,key) == 0){
             past->next = curr->next;
             free(curr);
+
+            set->len--;
 
             if(set->elements[i]->next == NULL)
                 set->size = set->size -1;
@@ -214,13 +218,13 @@ char* max_set(set* set)
     char* max = "";
     for(size_t i = 0; i < set->capacity; ++i)
     {
-        data* curr = set->elements[i];
-        do
+        data* curr = set->elements[i]->next;
+        while(curr != NULL)
         {
-            curr = curr->next;
             if(strcmp(curr->key, max) > 0)
                 max = curr->key;
-        }while(curr != NULL);
+            curr = curr->next;
+        }
     }
     return max;
 }
