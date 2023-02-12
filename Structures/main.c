@@ -57,7 +57,7 @@ int main()
     insert_set(&alphabet, "a");
     insert_set(&alphabet, "b");
 
-    set* edges = new_set(6);
+    set* edges = new_set(4);
     insert_set(&edges, "0+a+1");
     insert_set(&edges, "1+b+2");
     insert_set(&edges, "2+b+3");
@@ -69,8 +69,6 @@ int main()
             alphabet, edges, labels);
 
     //add_state_enfa(enfa);
-
-    free_enfa(enfa);
 
     return 0;
 }
