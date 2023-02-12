@@ -16,7 +16,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
     insert_set(&(enfa->alphabet), "ɛ");
     enfa->initial_states = initial_states;
     enfa->final_states = final_states;
-    if(enfa->initial_states->size == 0)
+    if(enfa->initial_states->len == 0)
     {
         insert_set(&(enfa->initial_states), "0");
         insert_set(&(enfa->all_states), "0");
@@ -26,7 +26,7 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         enfa->labels = labels;
     else
     {
-        for(size_t i = 0; i < enfa->all_states->size; ++i)
+        for(size_t i = 0; i < enfa->all_states->len; ++i)
         {
             char num[20];
             sprintf(num, "%zu", i);
