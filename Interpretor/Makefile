@@ -3,13 +3,13 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -g
 SRC = *.c
-OBJ = ${SRC:.c=.o}
 
-main: ${OBJ}
+main:
+	$(CC) $(CFLAGS)  $(SRC) -L ../libs -l:structures.a
  
 all: main
 
 clean:
-	${RM} ${OBJ}
-	${RM} main
+	${RM} *.o 
+	${RM} a.out 
 #end

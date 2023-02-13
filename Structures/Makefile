@@ -1,25 +1,22 @@
-# Makefile
+#Makefile for module: Structures
+CC = gcc
+CFLAGS := -Wall -Wextra
 
-CC = gcc -fsanitize=address
-CPPFLAGS = -MMD -g
-CFLAGS = -Wall -Wextra
-LDFLAGS =
-LDLIBS =
+OBJ = $(addsuffix .o, $(basename $(shell find . -name "*.c")))
+OBJDIR = ../libs
 
-SRC = main.c vector.c
-OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.d}
+all: archive
 
-main: ${OBJ}
+archive: setup $(OBJ)
+	$(AR) rc ../libs/structures.a $(OBJDIR)/*
 
--include ${DEP}
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	mv $@ $(OBJDIR)/
 
-.PHONY: clean
+setup:
+	mkdir -p $(OBJDIR)
 
 clean:
-	${RM} ${OBJ}
-	${RM} ${DEP}
-	${RM} main
-
-# END
-
+	rm -rf $(OBJDIR)
+#end

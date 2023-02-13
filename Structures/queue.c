@@ -1,5 +1,7 @@
 #include "queue.h"
+#include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 Queue* queue_new(size_t capacity)
 {
@@ -17,7 +19,7 @@ size_t queue_is_empty(Queue *q)
     return q->end == q->start;
 }
 
-void queue_push(Queue* q, void* v)
+void queue_enqueue(Queue* q, void* v)
 {
     q->data[q->end++] = v;
     if (q->end == q->capacity)
@@ -43,3 +45,14 @@ void queue_destroy(struct queue* q)
     free(q->data);
     free(q);
 }
+
+void queue_display(Queue *q)
+{
+    printf("Queue\nLen: %lu\n[", q->len);
+    for(size_t i = q->start; i != q->end; i = (i+1)%q->capacity)
+    {
+        printf(" %c ", q->data[i]->symbole);
+    }
+    printf("]\n");
+}
+
