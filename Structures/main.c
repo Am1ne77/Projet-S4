@@ -40,43 +40,16 @@ int main()
     free_set(set1);
     */
 
-    set* all_states = new_set(4);
-    insert_set(&all_states, "0");
-    insert_set(&all_states, "1");
-    insert_set(&all_states, "2");
-    insert_set(&all_states, "3");
-    insert_set(&all_states, "4");
+    automaton* a = new_automaton();
+    add_state_automaton(a);
+    add_state_automaton(a);
+    add_state_automaton(a);
+    add_state_automaton(a);
 
-    set* initial_states = new_set(4);
-    insert_set(&initial_states, "0");
-
-    set* final_states = new_set(4);
-    insert_set(&final_states, "4");
-
-    set* alphabet = new_set(4);
-    insert_set(&alphabet, "a");
-    insert_set(&alphabet, "b");
-
-    set* edges = new_set(4);
-    insert_set(&edges, "0+a+1");
-    insert_set(&edges, "1+b+2");
-    insert_set(&edges, "2+b+3");
-    insert_set(&edges, "3+a+4");
-
-    dict* labels = new_dict(4);
-
-    ENFA* enfa = new_enfa(all_states, initial_states, final_states,
-            alphabet, edges, labels);
-
-    //add_state_enfa(enfa);
-
-    printf("all_states size: %zu\n", enfa->all_states->len);
-    printf("initial_states size: %zu\n", enfa->initial_states->len);
-    printf("final_states size: %zu\n", enfa->final_states->len);
-    printf("alphabet_states size: %zu\n", enfa->alphabet->len);
-    printf("edges_states size: %zu\n", enfa->edges->len);
-
-    free_enfa(enfa);
+    add_arc_automaton(a, 0, 2, "a");
+    add_arc_automaton(a, 1, 0, "b");
+    add_arc_automaton(a, 0, 3, "c");
+    add_arc_automaton(a, 3, 1, "b");
 
     return 0;
 }

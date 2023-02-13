@@ -3,23 +3,36 @@
 
 #include "dict.h"
 #include "set.h"
+#include "vector.h"
 
-typedef struct ENFA
+typedef struct arc
 {
-    struct set* all_states;
-    struct set* initial_states;
-    struct set* final_states;
-    struct set* alphabet;
-    struct set* edges;
-    struct dict* next_states;
-    struct dict* labels;
-}ENFA;
+    size_t end;
+    char* letter;
+}arc;
 
-ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
-        set* alphabet, set* edges, dict* labels);
+typedef struct list
+{
+    struct arc* arc;
+    struct list* next_arc;
+    struct list* next_node;
+}list;
 
-void add_state_enfa(struct ENFA* enfa);
+typedef struct automaton
+{
+    size_t order;
+    set* initial_states;
+    set* final_states;
+    set* alphabet;
+    list* adjlists;
+}automaton;
 
-void free_enfa(struct ENFA* enfa);
+
+automaton* new_automaton();
+
+void add_state_automaton(automaton* autom);
+
+void add_arc_automaton(automaton* autom, size_t start, size_t end,
+        char* letter);
 
 #endif

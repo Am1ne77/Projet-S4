@@ -3,12 +3,12 @@
 
 #include <stdlib.h>
 
-struct vector
+typedef struct vector
 {
     size_t capacity;
     size_t size;
     int *data;
-};
+}vector;
 
 // Create a new vector.
 // The initial capacity is 1.
