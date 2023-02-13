@@ -51,5 +51,8 @@ int main()
     add_arc_automaton(a, 0, 3, "c");
     add_arc_automaton(a, 3, 1, "b");
 
+
+    print_automaton(a);
+
     return 0;
 }

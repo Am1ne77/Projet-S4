@@ -53,8 +53,12 @@ list* find_list(automaton* autom, size_t index)
 void add_arc_automaton(automaton* autom, size_t start, size_t end,
         char* letter)
 {
+
     if(start >= autom->order || end >= autom->order)
         errx(1, "Trying to add an arc to an inexistant node\n");
+
+    insert_set(&(autom->alphabet), letter);
+
     struct list* search = find_list(autom, start);
     while(search->next_arc != NULL)
     {
@@ -71,4 +75,42 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
     l->next_arc = NULL;
     l->next_node = NULL;
     search->next_arc = l;
+}
+
+
+void print_automaton(automaton* autom)
+{
+    printf("---------------automaton---------------\n");
+
+    printf("Automaton number of states: %zu\n", autom->order);
+
+    printf("Alphabet:\n{ ");
+    set* set = autom->alphabet;
+    for(size_t i = 0; i < set->capacity; ++i)
+    {
+        data* c = set->elements[i]->next;
+        while(c != NULL)
+        {
+            printf("%s ", c->key);
+            c = c->next;
+        }
+    }
+    printf("}\n");
+
+    printf("Adjlists:\n");
+    list* l = autom->adjlists->next_node;
+    for(size_t i = 0; i < autom->order; ++i)
+    {
+        printf("%zu -> |", i);
+        list* arcs = l->next_arc;
+        while(arcs != NULL)
+        {
+            printf(" (%s, %zu) |", arcs->arc->letter, arcs->arc->end);
+            arcs = arcs->next_arc;
+        }
+        printf("\n");
+        l = l->next_node;
+    }
+
+    printf("------------------end------------------\n");
 }

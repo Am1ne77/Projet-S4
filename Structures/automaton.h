@@ -35,4 +35,6 @@ void add_state_automaton(automaton* autom);
 void add_arc_automaton(automaton* autom, size_t start, size_t end,
         char* letter);
 
+void print_automaton(automaton* autom);
+
 #endif
