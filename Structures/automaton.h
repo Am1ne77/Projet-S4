@@ -4,6 +4,7 @@
 #include "dict.h"
 #include "set.h"
 #include "vector.h"
+#include "btree.h"
 
 typedef struct arc
 {
@@ -37,6 +38,6 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
 
 void print_automaton(automaton* autom);
 
-void build_enfa(automaton* autom);
+void build_enfa(automaton* autom, btree* regex);
 
 #endif

@@ -5,6 +5,7 @@
 #include "set.h"
 #include "dict.h"
 #include "automaton.h"
+#include "btree.h"
 
 
 automaton* new_automaton()
@@ -77,13 +78,63 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
     search->next_arc = l;
 }
 
+void Thompson(automaton* autom, size_t origin, size_t destination,
+        btree* regex)
+{
+    if(strcmp(regex->key, ".") == 0)
+    {
+        add_state_automaton(autom);
+        add_state_automaton(autom);
+        size_t p = autom->order - 2;
+        size_t r = autom->order - 1;
+        add_arc_automaton(autom, p, r, "ε");
+        Thompson(autom, origin, p, regex->child1);
+        Thompson(autom, r, destination, regex->child2);
 
-void build_enfa(automaton* autom)
+    }
+    else if(strcmp(regex->key, "+") == 0)
+    {
+        add_state_automaton(autom);
+        add_state_automaton(autom);
+        size_t p1 = autom->order - 2;
+        size_t p2 = autom->order - 1;
+        Thompson(autom, p1, p2, regex->child1);
+        add_arc_automaton(autom, origin, p1, "ε");
+        add_arc_automaton(autom, p2, destination, "ε");
+
+        add_state_automaton(autom);
+        add_state_automaton(autom);
+        size_t r1 = autom->order - 2;
+        size_t r2 = autom->order - 1;
+        Thompson(autom, r1, r2, regex->child2);
+        add_arc_automaton(autom, origin, r1, "ε");
+        add_arc_automaton(autom, r2, destination, "ε");
+    }
+    else if(strcmp(regex->key, "*") == 0)
+    {
+        add_arc_automaton(autom, origin, destination, "ε");
+        add_state_automaton(autom);
+        add_state_automaton(autom);
+        size_t p = autom->order - 2;
+        size_t r = autom->order - 1;
+        Thompson(autom, p, r, regex->child1);
+        add_arc_automaton(autom, origin, p, "ε");
+        add_arc_automaton(autom, r, destination, "ε");
+        add_arc_automaton(autom, r, p, "ε");
+    }
+    else
+    {
+        add_arc_automaton(autom, origin, destination, regex->key);
+    }
+}
+
+void build_enfa(automaton* autom, btree* regex)
 {
     add_state_automaton(autom);
     add_state_automaton(autom);
     insert_set(&(autom->initial_states), "0");
     insert_set(&(autom->final_states), "1");
+    Thompson(autom, 0, 1, regex);
 }
 
 

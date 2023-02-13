@@ -52,7 +52,7 @@ int main()
     add_arc_automaton(a, 3, 1, "b");
 */
 
-    build_enfa(a);
+    //build_enfa(a);
 
     print_automaton(a);
 
