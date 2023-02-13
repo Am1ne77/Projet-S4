@@ -8,7 +8,7 @@ btree* to_ast(Stack* polish)
 {
     Token* t = (Token*) stack_pop(polish);
 
-    btree* ast = malloc(sizeof(ast));
+    btree* ast = malloc(sizeof(btree));
     ast->key = (Token*)t;
     ast->child1 = NULL;
     ast->child2 = NULL;
