@@ -10,11 +10,14 @@
 #define PIPE_ASCII (int) '|'
 #define OPEN_PARENTHESES_ASCII (int) '('
 #define CLOSE_PARENTHESES_ASCII (int) ')'
+#define ADD_ASCII (int) '+'
 
-Token** lexer(char *str)
+Array* lexer(char *str)
 {
     size_t len = strlen(str);
-    Token **result = malloc(sizeof(Token*)*len);
+    Array *result = malloc(sizeof(Array));
+    result->len = len;
+    Token **arr = malloc(sizeof(Token*)*len);
 
     for(size_t i = 0; i < len; i++)
     {
@@ -23,45 +26,67 @@ Token** lexer(char *str)
         {
             case BACKSLASH_ASCII:
                 letter->tokentype = backslash;
+                letter->symbole = '\\';
                 break;
 
             case DOT_ASCII:
                 letter->tokentype = dot;
+                letter->symbole = '.';
+                letter->parity = 2;
+                letter->prioroty = 1;
                 break;
 
             case INTEROGATION_MARK_ASCII:
                 letter->tokentype = interogation_mark;
+                letter->symbole = '?';
+                letter->parity = 1;
                 break;
 
             case STAR_ASCII:
                 letter->tokentype = star;
+                letter->symbole = '*';
+                letter->parity = 1;
+                letter->prioroty = 2;
                 break;
                 
             case OPEN_BRACKET_ASCII:
                 letter->tokentype = open_bracket;
+                letter->symbole = '[';
                 break;
 
             case CLOSE_BRACKET_ASCII:
                 letter->tokentype = close_bracket;
+                letter->symbole = ']';
                 break;
 
             case PIPE_ASCII:
                 letter->tokentype = pipe;
+                letter->symbole = '|';
                 break;
 
             case OPEN_PARENTHESES_ASCII:
                 letter->tokentype = open_parentheses;
+                letter->symbole = '(';
                 break;
 
             case CLOSE_PARENTHESES_ASCII:
                 letter->tokentype = close_parentheses;
+                letter->symbole = ')';
+                break;
+    
+            case ADD_ASCII:
+                letter->tokentype = add;
+                letter->symbole = '+';
+                letter->parity = 2;
+                letter->prioroty = 0;
                 break;
 
             default:
                 letter->tokentype = other;
+                letter->symbole = str[i];
         }
-        result[i] = letter;
+        arr[i] = letter;
     }
-
+    result->start = arr;
     return result;
 }

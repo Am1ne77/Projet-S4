@@ -1,5 +1,4 @@
-# Makefile
-
+#Makefile for module: Structures
 CC = gcc -fsanitize=address
 CPPFLAGS = -MMD -g
 CFLAGS = -Wall -Wextra -D _GNU_SOURCE
@@ -7,19 +6,21 @@ LDFLAGS =
 LDLIBS = -lm
 
 SRC = main.c vector.c dict.c set.c automaton.c
-OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.d}
+OBJ = $(addsuffix .o, $(basename $(shell find . -name "*.c")))
+OBJDIR = ../libs
 
-main: ${OBJ}
+all: archive
 
--include ${DEP}
+archive: setup $(OBJ)
+	$(AR) rc ../libs/structures.a $(OBJDIR)/*
 
-.PHONY: clean
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	mv $@ $(OBJDIR)/
+
+setup:
+	mkdir -p $(OBJDIR)
 
 clean:
-	${RM} ${OBJ}
-	${RM} ${DEP}
-	${RM} main
-
-# END
-
+	rm -rf $(OBJDIR)
+#end

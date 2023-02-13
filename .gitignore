@@ -1,6 +1,3 @@
-#garbage
-aux
-
 # Prerequisites
 *.d
 
@@ -20,6 +17,7 @@ aux
 *.pch
 
 # Libraries
+libs
 *.lib
 *.a
 *.la

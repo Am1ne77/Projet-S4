@@ -1,5 +1,7 @@
 #include "interpretor.h"
 #include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void print_token(Token *tok, size_t i)
@@ -20,12 +22,15 @@ void print_token_list(Token **toklist, char *str)
     }
 }
 
+
 int main(int argc, char *argv[])
 {
     if(argc == 1)
         errx(3, "Not enough arguments");
 
-    Token **list = lexer(argv[1]);
-    print_token_list(list, argv[1]);
+    Array* arr = lexer(argv[1]);
+    Stack *s = shunting_yard(arr);
+
+    stack_display(s);
     return 0;
 }
