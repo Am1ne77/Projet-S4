@@ -56,11 +56,28 @@ body {
 }
 
 .button-left {
-  margin-left: 150px
+  margin-left: 50px
 }
 
-.button-rigbt {
-  margin-right: 150px
+.button-right {
+  margin-right: 50px
+}
+
+.top-left-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 10px;
+  background-color: transparent;
+  color: #151c48;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.top-left-button button:hover {
+  text-decoration: underline;
+  opacity: 0.7;
 }
 
 h1 {
