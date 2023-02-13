@@ -78,14 +78,51 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
 }
 
 
+void build_enfa(automaton* autom)
+{
+    add_state_automaton(autom);
+    add_state_automaton(autom);
+    insert_set(&(autom->initial_states), "0");
+    insert_set(&(autom->final_states), "1");
+}
+
+
 void print_automaton(automaton* autom)
 {
     printf("---------------automaton---------------\n");
 
     printf("Automaton number of states: %zu\n", autom->order);
 
+    printf("Initial States:\n{ ");
+    set* set = autom->initial_states;
+    for(size_t i = 0; i < set->capacity; ++i)
+    {
+        data* c = set->elements[i]->next;
+        while(c != NULL)
+        {
+            printf("%s ", c->key);
+            c = c->next;
+        }
+    }
+    printf("}\n");
+
+    printf("Final States:\n{ ");
+    set = autom->final_states;
+    for(size_t i = 0; i < set->capacity; ++i)
+    {
+        data* c = set->elements[i]->next;
+        while(c != NULL)
+        {
+            printf("%s ", c->key);
+            c = c->next;
+        }
+    }
+    printf("}\n");
+
+
+
     printf("Alphabet:\n{ ");
-    set* set = autom->alphabet;
+    set = autom->alphabet;
     for(size_t i = 0; i < set->capacity; ++i)
     {
         data* c = set->elements[i]->next;

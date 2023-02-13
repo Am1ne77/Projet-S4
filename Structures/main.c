@@ -41,7 +41,7 @@ int main()
     */
 
     automaton* a = new_automaton();
-    add_state_automaton(a);
+/*    add_state_automaton(a);
     add_state_automaton(a);
     add_state_automaton(a);
     add_state_automaton(a);
@@ -50,7 +50,9 @@ int main()
     add_arc_automaton(a, 1, 0, "b");
     add_arc_automaton(a, 0, 3, "c");
     add_arc_automaton(a, 3, 1, "b");
+*/
 
+    build_enfa(a);
 
     print_automaton(a);
 

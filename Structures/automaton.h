@@ -37,4 +37,6 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
 
 void print_automaton(automaton* autom);
 
+void build_enfa(automaton* autom);
+
 #endif
