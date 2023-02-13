@@ -52,9 +52,55 @@ int main()
     add_arc_automaton(a, 3, 1, "b");
 */
 
-    //build_enfa(a);
+    btree* root;
+    root = malloc(sizeof(struct btree));
+    root->key = "+";
 
-    print_automaton(a);
+    btree* la;
+    la = malloc(sizeof(struct btree));
+    la->key = "a";
+    la->child1 = NULL;
+    la->child2 = NULL;
+    root->child1 = la;
+
+    btree* dot;
+    dot = malloc(sizeof(struct btree));
+    dot->key = ".";
+    root->child2 = dot;
+
+    btree* lb;
+    lb = malloc(sizeof(struct btree));
+    lb->key = "b";
+    lb->child1 = NULL;
+    lb->child2 = NULL;
+    dot->child1 = lb;
+
+    btree* star;
+    star = malloc(sizeof(struct btree));
+    star->key = "*";
+    dot->child2 = star;
+
+    btree* lc;
+    lc = malloc(sizeof(struct btree));
+    lc->key = "c";
+    star->child1 = lc;
+    lc->child1 = NULL;
+    lc->child2 = NULL;
+
+    build_enfa(a, root);
+
+    //print_automaton(a);
+
+    print_dot_automaton(a);
+
+    free_automaton(a);
+
+    free(root);
+    free(la);
+    free(dot);
+    free(star);
+    free(lb);
+    free(lc);
 
     return 0;
 }

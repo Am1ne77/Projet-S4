@@ -36,8 +36,12 @@ void add_state_automaton(automaton* autom);
 void add_arc_automaton(automaton* autom, size_t start, size_t end,
         char* letter);
 
+void build_enfa(automaton* autom, btree* regex);
+
+void free_automaton(automaton* autom);
+
 void print_automaton(automaton* autom);
 
-void build_enfa(automaton* autom, btree* regex);
+void print_dot_automaton(automaton* autom);
 
 #endif

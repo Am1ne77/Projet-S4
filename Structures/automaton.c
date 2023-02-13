@@ -137,6 +137,28 @@ void build_enfa(automaton* autom, btree* regex)
     Thompson(autom, 0, 1, regex);
 }
 
+void free_automaton(automaton* autom)
+{
+    free_set(autom->initial_states);
+    free_set(autom->final_states);
+    free_set(autom->alphabet);
+    list* l;
+    list* curr;
+    while(autom->adjlists != NULL)
+    {
+        l = autom->adjlists;
+        autom->adjlists = autom->adjlists->next_node;
+        while(l != NULL)
+        {
+            curr = l;
+            l = l->next_arc;
+            free(curr->arc);
+            free(curr);
+        }
+    }
+    free(autom);
+}
+
 
 void print_automaton(automaton* autom)
 {
@@ -201,4 +223,28 @@ void print_automaton(automaton* autom)
     }
 
     printf("------------------end------------------\n");
+}
+
+
+void print_dot_automaton(automaton* autom)
+{
+    printf("digraph G {\n");
+
+    list* l = autom->adjlists->next_node;
+    for(size_t i = 0; i < autom->order; ++i)
+    {
+        list* arcs = l->next_arc;
+        while(arcs != NULL)
+        {
+            printf("\t %zu->%zu [ label=\"%s\" ];\n", i,
+                    arcs->arc->end, arcs->arc->letter);
+            arcs = arcs->next_arc;
+        }
+        printf("\n");
+        l = l->next_node;
+    }
+
+    printf("\t 0 [shape=Mdiamond];\n"
+            "\t 1 [shape=Msquare];\n"
+            "\t rankdir = \"LR\";\n}\n");
 }

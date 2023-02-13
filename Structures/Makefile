@@ -1,5 +1,5 @@
 #Makefile for module: Structures
-CC = gcc -fsanitize=address
+CC = gcc
 CPPFLAGS = -MMD -g
 CFLAGS = -Wall -Wextra -D _GNU_SOURCE
 LDFLAGS =
@@ -10,6 +10,9 @@ OBJ = $(addsuffix .o, $(basename $(shell find . -name "*.c")))
 OBJDIR = ../libs
 
 all: archive
+
+struct: ${OBJ}
+	${CC} ${OBJDIR}/* -o main
 
 archive: setup $(OBJ)
 	$(AR) rc ../libs/structures.a $(OBJDIR)/*
@@ -23,4 +26,5 @@ setup:
 
 clean:
 	rm -rf $(OBJDIR)
+	rm -rf main
 #end
