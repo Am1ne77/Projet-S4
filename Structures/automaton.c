@@ -23,18 +23,18 @@ struct ENFA* new_enfa(set* all_states, set* initial_states, set* final_states,
         insert_set(&(enfa->all_states), "0");
     }
 
-    if(labels->size != 0)
+    if(labels->len != 0)
         enfa->labels = labels;
     else
     {
+        enfa->labels = labels;
         size_t l = log10(enfa->all_states->len) + 2;
         char num[l];
         for(size_t i = 0; i < enfa->all_states->len; ++i)
         {
             sprintf(num, "%zu", i);
-            insert_dict(&(labels), num, num);
+            insert_dict(&(enfa->labels), num, num);
         }
-        enfa->labels = labels;
     }
 
     enfa->next_states = new_dict(4);

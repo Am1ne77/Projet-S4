@@ -102,7 +102,9 @@ void insert_dict(dict** d, char* key, void* value)
     uint32_t i = hash_d(key) % ((*d)->capacity);
 
     if(search_dict(*d, key, i))
+    {
         return;
+    }
 
     if(100 * (*d)->size / (*d)->capacity >= 75)
         expand_dict(d);

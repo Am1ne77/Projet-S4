@@ -68,7 +68,13 @@ int main()
     ENFA* enfa = new_enfa(all_states, initial_states, final_states,
             alphabet, edges, labels);
 
-    add_state_enfa(enfa);
+    //add_state_enfa(enfa);
+
+    printf("all_states size: %zu\n", enfa->all_states->len);
+    printf("initial_states size: %zu\n", enfa->initial_states->len);
+    printf("final_states size: %zu\n", enfa->final_states->len);
+    printf("alphabet_states size: %zu\n", enfa->alphabet->len);
+    printf("edges_states size: %zu\n", enfa->edges->len);
 
     free_enfa(enfa);
 
