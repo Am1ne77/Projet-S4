@@ -12,7 +12,7 @@ Stack* shunting_yard (Array* input)
         Token* cur = input->start[i];
         if(cur->tokentype == other)
             stack_push(result, cur);
-/*
+/*        
         else if(cur->tokentype == close_parentheses)
         {
             Token* aux = stack_pop(s);

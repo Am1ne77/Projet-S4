@@ -17,8 +17,8 @@ Array* lexer(char *str)
 {
     size_t len = strlen(str);
     Array *result = malloc(sizeof(Array));
-    result->len = 0;
-    size_t pos = 0;
+    result->len = len;
+ //   size_t pos = 0;
     Token **arr = malloc(sizeof(Token*)*len);
 
     for(size_t i = 0; i < len; i++)
@@ -83,16 +83,16 @@ Array* lexer(char *str)
                 letter->prioroty = 0;
                 break;
 
-            case SPACE_ASCII:
-                continue;
+//            case SPACE_ASCII:
+//                continue;
 
             default:
                 letter->tokentype = other;
                 letter->symbole = str[i];
         }
-        arr[pos] = letter;
-        result->len ++;
-        pos++;
+        arr[i] = letter;
+//        result->len ++;
+//        pos++;
     }
     result->start = arr;
     return result;
