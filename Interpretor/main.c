@@ -1,4 +1,5 @@
 #include "interpretor.h"
+#include "../Structures/automaton.h"
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,18 +24,24 @@ void print_token_list(Token **toklist, char *str)
 }
 
 
-int main(/*int argc, char *argv[]*/)
-{/*
+int main(int argc, char *argv[])
+{
     if(argc == 1)
         errx(3, "Not enough arguments");
-*/
-    //Array* arr = lexer(argv[1]);
-    Array* arr = lexer("p+p*");
+
+    Array* arr = lexer(argv[1]);
     Stack *s = shunting_yard(arr);
 
     stack_display(s);
     btree* ast = to_ast(s);
     to_dot_ast(ast);
-    print_ast(ast,0);
+
+    automaton* a = new_automaton();
+    build_enfa(a, ast);
+
+    print_dot_automaton(a);
+
+    free_automaton(a);
+
     return 0;
 }
