@@ -10,10 +10,8 @@ btree* to_ast(Stack* polish)
 
     btree* ast = malloc(sizeof(btree));
     ast->key = &t->symbole;
-    printf("%s\n", ast->key);
     ast->child1 = NULL;
     ast->child2 = NULL;
-    stack_display(polish);
 
     if(t->tokentype != 10)
     {
