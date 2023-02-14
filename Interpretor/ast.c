@@ -15,11 +15,11 @@ btree* to_ast(Stack* polish)
     ast->child2 = NULL;
     stack_display(polish);
 
-    if(t->tokentype != 10)
+    if(t->tokentype != other)
     {
         btree* child1 = to_ast(polish);
         ast->child1 = child1;
-        if(t->tokentype != 3)
+        if(t->tokentype != star)
         {
             btree* child2 = to_ast(polish);
             ast->child2 = child2;

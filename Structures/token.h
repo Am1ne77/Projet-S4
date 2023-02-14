@@ -15,6 +15,7 @@ enum tokentype
     open_parentheses,
     close_parentheses,
     add,
+    space,
     other
 };
 
