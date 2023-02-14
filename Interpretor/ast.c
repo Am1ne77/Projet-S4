@@ -17,12 +17,12 @@ btree* to_ast(Stack* polish)
 
     if(t->tokentype != 10)
     {
-        btree* child1 = to_ast(polish);
-        ast->child1 = child1;
+        btree* child2 = to_ast(polish);
+        ast->child2 = child2;
         if(t->tokentype != 3)
         {
-            btree* child2 = to_ast(polish);
-            ast->child2 = child2;
+            btree* child1 = to_ast(polish);
+            ast->child1 = child1;
         }
     }
 

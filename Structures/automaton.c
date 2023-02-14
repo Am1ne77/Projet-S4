@@ -117,7 +117,7 @@ void Thompson(automaton* autom, size_t origin, size_t destination,
         add_state_automaton(autom);
         size_t p = autom->order - 2;
         size_t r = autom->order - 1;
-        Thompson(autom, p, r, regex->child1);
+        Thompson(autom, p, r, regex->child2);
         add_arc_automaton(autom, origin, p, "ε");
         add_arc_automaton(autom, r, destination, "ε");
         add_arc_automaton(autom, r, p, "ε");
