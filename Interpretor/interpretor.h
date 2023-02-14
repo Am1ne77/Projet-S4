@@ -13,5 +13,7 @@
 Array* lexer(char *str);
 Stack* shunting_yard(Array* input);
 btree* to_ast(Stack* polish);
-
+void print_ast(btree* ast, size_t offset);
+void to_dot_ast(btree* ast);
+void aux(btree* ast, char* p);
 #endif
