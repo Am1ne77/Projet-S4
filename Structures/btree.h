@@ -5,7 +5,7 @@
 
 typedef struct btree
 {
-    void* key;
+    char* key;
     struct btree *child1;
     struct btree *child2;
 }btree;
