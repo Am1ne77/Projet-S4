@@ -137,6 +137,42 @@ void build_enfa(automaton* autom, btree* regex)
     Thompson(autom, 0, 1, regex);
 }
 
+set* get_epsilon_closure(automaton* autom, char* origin)
+{
+    set* incoming = new_set(4);
+    insert_set(&incoming, origin);
+    set* result = new_set(4);
+
+    char* val;
+    int s;
+    while(incoming->len > 0)
+    {
+        val = pop_set(incoming);
+
+        if(search_set(result, val) == 1)
+            continue;
+
+        insert_set(&result, val);
+
+        list* l = find_list(autom, atoi(val));
+
+        while(l->next_arc != NULL)
+        {
+            l = l->next_arc;
+            if(strcmp(l->arc->letter, "ε") != 0)
+                continue;
+
+            s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
+            char* str = malloc(s * sizeof(char) + 1);
+
+            sprintf(str, "%zu", l->arc->end);
+
+            insert_set(&incoming, str);
+        }
+    }
+    return result;
+}
+
 void free_automaton(automaton* autom)
 {
     free_set(autom->initial_states);

@@ -40,6 +40,9 @@ int main(int argc, char *argv[])
 
     print_dot_automaton(a);
 
+    set* se = get_epsilon_closure(a, "7");
+    print_set(se);
+
     free_automaton(a);
 
     return 0;

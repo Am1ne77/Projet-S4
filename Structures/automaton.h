@@ -38,6 +38,8 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
 
 void build_enfa(automaton* autom, btree* regex);
 
+set* get_epsilon_closure(automaton* autom, char* origin);
+
 void free_automaton(automaton* autom);
 
 void print_automaton(automaton* autom);
