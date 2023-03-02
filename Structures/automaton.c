@@ -163,7 +163,7 @@ set* get_epsilon_closure(automaton* autom, char* origin)
                 continue;
 
             s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
-            char* str = malloc(s * sizeof(char) + 1);
+            char* str = malloc(s);
 
             sprintf(str, "%zu", l->arc->end);
 
@@ -171,6 +171,77 @@ set* get_epsilon_closure(automaton* autom, char* origin)
         }
     }
     return result;
+}
+
+automaton* to_nfa(automaton* autom)
+{
+    automaton* nfa = new_automaton();
+    nfa->order = autom->order;
+    union_set(&nfa->initial_states, autom->initial_states);
+    union_set(&nfa->final_states, autom->final_states);
+    union_set(&nfa->alphabet, autom->alphabet);
+
+    delete_set(nfa->alphabet, "ε");
+
+    nfa->adjlists = malloc(sizeof(struct list));
+    nfa->adjlists->arc = NULL;
+    nfa->adjlists->next_arc = NULL;
+    nfa->adjlists->next_node = NULL;
+
+    list* search = nfa->adjlists;
+    list* li;
+    for(size_t i = 0; i < nfa->order; ++i)
+    {
+        li = find_list(autom, i);
+        struct list* l = malloc(sizeof(struct list));
+        l->next_arc = NULL;
+        l->next_node = NULL;
+        l->arc = NULL;
+        search->next_node = l;
+        search = search->next_node;
+
+        while(li->next_arc != NULL)
+        {
+            li = li->next_arc;
+            //add_arc_automaton(nfa, i, li->arc->end, li->arc->letter);
+        }
+    }
+
+    int si;
+    for(size_t i = 0; i < nfa->order; ++i)
+    {
+        si = (int)((ceil(log10(i+1))+1)*sizeof(char));
+        char* str = malloc(si);
+        sprintf(str, "%zu", i);
+
+        set* s = get_epsilon_closure(autom, str);
+
+        for(size_t j = 0; j < s->capacity; ++j)
+        {
+            data* cur = s->elements[j]->next;
+            while(cur != NULL)
+            {
+                if(search_set(autom->final_states, cur->key) == 1)
+                {
+                    insert_set(&(nfa->final_states), str);
+                }
+
+                list* l = find_list(autom, atoi(cur->key));
+                while(l->next_arc != NULL)
+                {
+                    l = l->next_arc;
+                    if(strcmp(l->arc->letter, "ε") == 0)
+                        continue;
+
+                    add_arc_automaton(nfa, i, l->arc->end,l->arc->letter);
+                }
+
+                cur = cur->next;
+            }
+        }
+    }
+
+    return nfa;
 }
 
 void free_automaton(automaton* autom)
@@ -264,7 +335,7 @@ void print_automaton(automaton* autom)
 
 void print_dot_automaton(automaton* autom)
 {
-    printf("digraph G {\n");
+    printf("digraph G {\n\t node [shape=circle]\n\n");
 
     list* l = autom->adjlists->next_node;
     for(size_t i = 0; i < autom->order; ++i)
@@ -285,7 +356,7 @@ void print_dot_automaton(automaton* autom)
         data* c = autom->initial_states->elements[i]->next;
         while(c != NULL)
         {
-            printf("\t %s [shape=box]\n", c->key);
+            printf("\t %s [style=filled]\n", c->key);
             c = c->next;
         }
     }

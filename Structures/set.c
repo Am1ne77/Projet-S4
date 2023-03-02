@@ -175,7 +175,6 @@ char* pop_set(set* set)
 }
 
 // Return, in set1 the union of the two sets
-// set2 is freed by the function
 void union_set(set** set1, set* set2)
 {
     for(size_t i = 0; i < set2->capacity; ++i)
@@ -186,7 +185,6 @@ void union_set(set** set1, set* set2)
             curr = curr->next;
         }
     }
-    free_set(set2);
 }
 
 // Not so pretty print of a set

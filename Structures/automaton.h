@@ -40,6 +40,8 @@ void build_enfa(automaton* autom, btree* regex);
 
 set* get_epsilon_closure(automaton* autom, char* origin);
 
+automaton* to_nfa(automaton* autom);
+
 void free_automaton(automaton* autom);
 
 void print_automaton(automaton* autom);
