@@ -244,7 +244,25 @@ void print_dot_automaton(automaton* autom)
         l = l->next_node;
     }
 
-    printf("\t 0 [shape=Mdiamond];\n"
-            "\t 1 [shape=Msquare];\n"
-            "\t rankdir = \"LR\";\n}\n");
+    for(size_t i = 0; i < autom->initial_states->capacity; ++i)
+    {
+        data* c = autom->initial_states->elements[i]->next;
+        while(c != NULL)
+        {
+            printf("\t %s [shape=box]\n", c->key);
+            c = c->next;
+        }
+    }
+    for(size_t i = 0; i < autom->final_states->capacity; ++i)
+    {
+        data* c = autom->final_states->elements[i]->next;
+        while(c != NULL)
+        {
+            printf("\t %s [shape=doublecircle]\n", c->key);
+            c = c->next;
+        }
+    }
+
+
+    printf("\t rankdir = \"LR\";\n}\n");
 }
