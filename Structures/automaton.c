@@ -10,22 +10,31 @@
 
 automaton* new_automaton()
 {
+    //allocating memory space on heap
     automaton* autom;
     autom = malloc(sizeof(struct automaton));
+
     autom->order = 0;
+    //Initialising the sets
     autom->initial_states = new_set(4);
     autom->final_states = new_set(4);
     autom->alphabet = new_set(4);
+
+    //Initializing adjlist
     autom->adjlists = malloc(sizeof(struct list));
     autom->adjlists->arc = NULL;
     autom->adjlists->next_arc = NULL;
     autom->adjlists->next_node = NULL;
+
     return autom;
 }
 
 void add_state_automaton(automaton* autom)
 {
+    //Incrementing automaton size
     autom->order += 1;
+
+    //Adding an adjlist to the automaton
     struct list* search = autom->adjlists;
     while(search->next_node != NULL)
     {
@@ -38,6 +47,7 @@ void add_state_automaton(automaton* autom)
     search->next_node = l;
 }
 
+//Function that returns the list at the position of index index
 list* find_list(automaton* autom, size_t index)
 {
     if(index >= autom->order)
@@ -54,20 +64,24 @@ list* find_list(automaton* autom, size_t index)
 void add_arc_automaton(automaton* autom, size_t start, size_t end,
         char* letter)
 {
-
+    //Handling error of adding an arc to a node that doesn't exist
     if(start >= autom->order || end >= autom->order)
         errx(1, "Trying to add an arc to an inexistant node\n");
 
+    //Insering the letter of the arc in the alphabet set of the automaton
     insert_set(&(autom->alphabet), letter);
 
     struct list* search = find_list(autom, start);
     while(search->next_arc != NULL)
     {
+        //Checking that the arc doesn't already exist
         if(search->next_arc->arc->end == end
                 && strcmp(search->next_arc->arc->letter, letter) == 0)
             return;
         search = search->next_arc;
     }
+
+    //Creating new arc
     struct arc* a = malloc(sizeof(struct arc));
     a->end = end;
     a->letter = letter;
@@ -78,9 +92,11 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
     search->next_arc = l;
 }
 
+//Thompson algorithm that builds the automaton from an the AST regex
 void Thompson(automaton* autom, size_t origin, size_t destination,
         btree* regex)
 {
+    //Concatenation case
     if(strcmp(regex->key, ".") == 0)
     {
         add_state_automaton(autom);
@@ -92,6 +108,7 @@ void Thompson(automaton* autom, size_t origin, size_t destination,
         Thompson(autom, r, destination, regex->child2);
 
     }
+    //Union case
     else if(strcmp(regex->key, "+") == 0)
     {
         add_state_automaton(autom);
@@ -110,6 +127,7 @@ void Thompson(automaton* autom, size_t origin, size_t destination,
         add_arc_automaton(autom, origin, r1, "ε");
         add_arc_automaton(autom, r2, destination, "ε");
     }
+    //Kleene star case
     else if(strcmp(regex->key, "*") == 0)
     {
         add_arc_automaton(autom, origin, destination, "ε");
@@ -122,6 +140,7 @@ void Thompson(automaton* autom, size_t origin, size_t destination,
         add_arc_automaton(autom, r, destination, "ε");
         add_arc_automaton(autom, r, p, "ε");
     }
+    //Leaf case (or letter case)
     else
     {
         add_arc_automaton(autom, origin, destination, regex->key);
@@ -139,29 +158,37 @@ void build_enfa(automaton* autom, btree* regex)
 
 set* get_epsilon_closure(automaton* autom, char* origin)
 {
+    //Initializing sets
     set* incoming = new_set(4);
     insert_set(&incoming, origin);
     set* result = new_set(4);
 
     char* val;
     int s;
+    //We keep on going while the incoming set isn't empty
     while(incoming->len > 0)
     {
+        //Poping random value from set
         val = pop_set(incoming);
 
+        //If node already in result, we continue
         if(search_set(result, val) == 1)
             continue;
 
+        //Inserting val in the result set
         insert_set(&result, val);
 
         list* l = find_list(autom, atoi(val));
 
+        //Going through adjlist to add the states that can be reached using
+        //an epsilon transition to the incoming set
         while(l->next_arc != NULL)
         {
             l = l->next_arc;
             if(strcmp(l->arc->letter, "ε") != 0)
                 continue;
 
+            //Dynamically allocating a string for the node number
             s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
             char* str = malloc(s);
 
@@ -175,19 +202,23 @@ set* get_epsilon_closure(automaton* autom, char* origin)
 
 automaton* to_nfa(automaton* autom)
 {
+    //Initialising new automaton
     automaton* nfa = new_automaton();
     nfa->order = autom->order;
     union_set(&nfa->initial_states, autom->initial_states);
     union_set(&nfa->final_states, autom->final_states);
     union_set(&nfa->alphabet, autom->alphabet);
 
+    //Removing the epsilon letter from the alphabet
     delete_set(nfa->alphabet, "ε");
 
+    //Initialzing adjlists
     nfa->adjlists = malloc(sizeof(struct list));
     nfa->adjlists->arc = NULL;
     nfa->adjlists->next_arc = NULL;
     nfa->adjlists->next_node = NULL;
 
+    //Creating an adjlist for each node
     list* search = nfa->adjlists;
     list* li;
     for(size_t i = 0; i < nfa->order; ++i)
@@ -200,32 +231,35 @@ automaton* to_nfa(automaton* autom)
         search->next_node = l;
         search = search->next_node;
 
-        while(li->next_arc != NULL)
-        {
-            li = li->next_arc;
-            //add_arc_automaton(nfa, i, li->arc->end, li->arc->letter);
-        }
     }
 
     int si;
+    //For each state of the automaton
     for(size_t i = 0; i < nfa->order; ++i)
     {
+        //Dynamically allocating a string for the node number
         si = (int)((ceil(log10(i+1))+1)*sizeof(char));
         char* str = malloc(si);
         sprintf(str, "%zu", i);
 
+        //Getting the epsilon closure of the node
         set* s = get_epsilon_closure(autom, str);
 
+        //For each element in the epsilon closure set
         for(size_t j = 0; j < s->capacity; ++j)
         {
             data* cur = s->elements[j]->next;
             while(cur != NULL)
             {
+                //If the final state is present in the set, add the node the
+                //final state se
                 if(search_set(autom->final_states, cur->key) == 1)
                 {
                     insert_set(&(nfa->final_states), str);
                 }
 
+                // if the arc letter is different than epsilo, we add it to the
+                // automaton
                 list* l = find_list(autom, atoi(cur->key));
                 while(l->next_arc != NULL)
                 {
