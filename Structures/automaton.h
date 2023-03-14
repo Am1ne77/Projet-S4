@@ -59,10 +59,14 @@ set* get_epsilon_closure(automaton* autom, char* origin);
 //ENFA to NFA
 automaton* to_nfa(automaton* autom);
 
+//Function that returns the accessible states from origin
+set* get_accessible_states(automaton* autom, char* origin);
+
+//Returns 1 if a state is useful, 0 otherwise
+int is_useful(automaton* autom, char* origin);
 
 //Function that frees an automaton
 void free_automaton(automaton* autom);
-
 
 //Function that prints the automaton adjlitsts on the stdout
 void print_automaton(automaton* autom);

@@ -276,7 +276,7 @@ automaton* to_nfa(automaton* autom)
     return nfa;
 }
 
-set* get_accessble_states(automaton* autom, char* origin)
+set* get_accessible_states(automaton* autom, char* origin)
 {
     //Initializing sets
     set* incoming = new_set(4);
@@ -313,6 +313,54 @@ set* get_accessble_states(automaton* autom, char* origin)
         }
     }
     return result;
+}
+
+//Returns 1 if origin is an accessible state, 0 otherwise
+int is_accessible(automaton* autom, char* origin)
+{
+    set* ini = autom->initial_states;
+    set* s;
+    for(size_t i = 0; i < ini->capacity; ++i)
+    {
+        data* cur = ini->elements[i]->next;
+        while(cur != NULL)
+        {
+            s = get_accessible_states(autom, cur->key);
+            if(search_set(s, origin) == 1)
+                return 1;
+            cur = cur->next;
+        }
+    }
+    return 0;
+}
+
+//Returns 1 if origin is a co_accessible state, 0 otherwise
+int is_co_accessible(automaton* autom, char* origin)
+{
+    set* s = get_accessible_states(autom, origin);
+
+    //For each element in the epsilon closure set
+    for(size_t j = 0; j < s->capacity; ++j)
+    {
+        data* cur = s->elements[j]->next;
+        while(cur != NULL)
+        {
+            //If the final state is present in the set, return True
+            if(search_set(autom->final_states, cur->key) == 1)
+            {
+                return 1;
+            }
+
+            cur = cur->next;
+        }
+    }
+    return 0;
+}
+
+//Returns 1 if a state is useful, 0 otherwise
+int is_useful(automaton* autom, char* origin)
+{
+    return is_accessible(autom, origin) && is_co_accessible(autom, origin);
 }
 
 void free_automaton(automaton* autom)
