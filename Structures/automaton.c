@@ -220,10 +220,8 @@ automaton* to_nfa(automaton* autom)
 
     //Creating an adjlist for each node
     list* search = nfa->adjlists;
-    list* li;
     for(size_t i = 0; i < nfa->order; ++i)
     {
-        li = find_list(autom, i);
         struct list* l = malloc(sizeof(struct list));
         l->next_arc = NULL;
         l->next_node = NULL;
@@ -276,6 +274,45 @@ automaton* to_nfa(automaton* autom)
     }
 
     return nfa;
+}
+
+set* get_accessble_states(automaton* autom, char* origin)
+{
+    //Initializing sets
+    set* incoming = new_set(4);
+    insert_set(&incoming, origin);
+    set* result = new_set(4);
+
+    char* val;
+    int s;
+    //We keep on going while the incoming set isn't empty
+    while(incoming->len > 0)
+    {
+        //Poping random value from set
+        val = pop_set(incoming);
+
+        //If node already in result, we continue
+        if(search_set(result, val) == 1)
+            continue;
+
+        //Inserting val in the result set
+        insert_set(&result, val);
+
+        //Adding the nodes val is connected to
+        list* l = find_list(autom, atoi(val));
+        while(l->next_arc != NULL)
+        {
+            l = l->next_arc;
+            //Dynamically allocating a string for the node number
+            s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
+            char* str = malloc(s);
+
+            sprintf(str, "%zu", l->arc->end);
+
+            insert_set(&incoming, str);
+        }
+    }
+    return result;
 }
 
 void free_automaton(automaton* autom)
