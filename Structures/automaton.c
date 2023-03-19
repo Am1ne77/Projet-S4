@@ -6,6 +6,7 @@
 #include "dict.h"
 #include "automaton.h"
 #include "btree.h"
+#include "vector.h"
 
 
 automaton* new_automaton()
@@ -48,9 +49,12 @@ void add_state_automaton(automaton* autom)
 }
 
 //Function that returns the list at the position of index index
-list* find_list(automaton* autom, size_t index)
+list* find_list(automaton* autom, ssize_t index)
 {
-    if(index >= autom->order)
+    if(index == -1)
+        return autom->adjlists;
+
+    if((size_t) index >= autom->order)
         errx(1, "Trying to access inexistant node");
     struct list* search = autom->adjlists->next_node;
     while(search != NULL && index > 0)
@@ -91,6 +95,25 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
     l->next_node = NULL;
     search->next_arc = l;
 }
+
+/*void remove_state_automaton(automaton* autom, int state)
+{
+    int s = (int)((ceil(log10(state))+1)*sizeof(char));
+    char str[s];
+    sprintf(str, "%i", state);
+
+    delete_set(autom->initial_states, str);
+    delete_set(autom->final_states, str);
+
+    struct list* l = find_list(autom, (size_t) state - 1);
+
+    if((size_t) state != autom->order - 1)
+        l->next_node = l->next_node->next_node;
+    else
+        l->next_node = NULL;
+
+    autom->order--;
+}*/
 
 //Thompson algorithm that builds the automaton from an the AST regex
 void Thompson(automaton* autom, size_t origin, size_t destination,
@@ -361,6 +384,77 @@ int is_co_accessible(automaton* autom, char* origin)
 int is_useful(automaton* autom, char* origin)
 {
     return is_accessible(autom, origin) && is_co_accessible(autom, origin);
+}
+
+//Prunes automaton
+automaton* prune_automaton(automaton* autom)
+{
+    set* v = new_set(4);
+    int s = (int)((ceil(log10(autom->order))+1)*sizeof(char));
+    ssize_t ne[autom->order];
+    size_t count = 0;
+
+    for(size_t i = 0; i < autom->order; ++i)
+    {
+        char str[s];
+        sprintf(str, "%zu", i);
+
+        if(is_useful(autom, str) == 0)
+        {
+            insert_set(&v, str);
+            ne[i] = -1;
+        }
+        else
+        {
+            ne[i] = count;
+            ++count;
+        }
+    }
+
+    automaton* a = new_automaton();
+
+    for(size_t i = 0; i < count; ++i)
+    {
+        add_state_automaton(a);
+    }
+
+
+    char str[s];
+    for(size_t i = 0; i < autom->order; ++i)
+    {
+        sprintf(str, "%zu", i);
+
+        if(ne[i] == -1)
+            continue;
+
+        if(search_set(autom->initial_states, str) == 1)
+        {
+            char* per = malloc(s);
+            sprintf(per, "%zu", ne[i]);
+            insert_set(&a->initial_states, per);
+        }
+
+        if(search_set(autom->final_states, str) == 1)
+        {
+            char* per = malloc(s);
+            sprintf(per, "%zu", ne[i]);
+            insert_set(&a->final_states, per);
+        }
+
+
+        list* l = find_list(autom, i);
+        while(l->next_arc != NULL)
+        {
+            l = l->next_arc;
+            sprintf(str, "%zu", l->arc->end);
+            if(ne[l->arc->end] != -1)
+            {
+                add_arc_automaton(a, ne[i], ne[l->arc->end], l->arc->letter);
+            }
+        }
+    }
+
+    return a;
 }
 
 void free_automaton(automaton* autom)

@@ -65,6 +65,9 @@ set* get_accessible_states(automaton* autom, char* origin);
 //Returns 1 if a state is useful, 0 otherwise
 int is_useful(automaton* autom, char* origin);
 
+//Prunes automaton
+automaton* prune_automaton(automaton* autom);
+
 //Function that frees an automaton
 void free_automaton(automaton* autom);
 

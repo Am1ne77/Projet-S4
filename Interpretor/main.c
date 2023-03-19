@@ -43,8 +43,12 @@ int main(int argc, char *argv[])
     automaton* nfa = to_nfa(a);
     print_dot_automaton(nfa);
 
+    automaton* p = prune_automaton(nfa);
+    print_dot_automaton(p);
+
     free_automaton(a);
     free_automaton(nfa);
+    free_automaton(p);
 
     return 0;
 }
