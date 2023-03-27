@@ -16,8 +16,9 @@ Array* lexer(char *str)
 {
     size_t len = strlen(str);
     Array *result = malloc(sizeof(Array));
-    result->len = len;
-    Token **arr = malloc(sizeof(Token*)*len);
+    result->len = 0;
+    Queue q = queue_new();
+    result->q = q;
 
     for(size_t i = 0; i < len; i++)
     {
@@ -27,6 +28,7 @@ Array* lexer(char *str)
             case BACKSLASH_ASCII:
                 letter->tokentype = backslash;
                 letter->symbole = '\\';
+                ++result->len;
                 break;
 
             case DOT_ASCII:
@@ -34,12 +36,14 @@ Array* lexer(char *str)
                 letter->symbole = '.';
                 letter->parity = 2;
                 letter->prioroty = 1;
+                ++result->len;
                 break;
 
             case INTEROGATION_MARK_ASCII:
                 letter->tokentype = interogation_mark;
                 letter->symbole = '?';
                 letter->parity = 1;
+                ++result->len;
                 break;
 
             case STAR_ASCII:
@@ -47,16 +51,19 @@ Array* lexer(char *str)
                 letter->symbole = '*';
                 letter->parity = 1;
                 letter->prioroty = 2;
+                ++result->len;
                 break;
                 
             case OPEN_BRACKET_ASCII:
                 letter->tokentype = open_bracket;
                 letter->symbole = '[';
+                ++result->len;
                 break;
 
             case CLOSE_BRACKET_ASCII:
                 letter->tokentype = close_bracket;
                 letter->symbole = ']';
+                ++result->len;
                 break;
 
             case PIPE_ASCII:
