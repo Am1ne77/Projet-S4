@@ -472,6 +472,8 @@ size_t insert_index(const char* delim, char* s, size_t val)
 
 char* get_reachable_states(automaton* a, char* origins, char* letter)
 {
+    if(strcmp(origins, "∅") == 0)
+        return "∅";
     GString* gs = g_string_new("");
     char delim[] = "+";
     char *ptr = strtok(origins, delim);
@@ -497,16 +499,83 @@ char* get_reachable_states(automaton* a, char* origins, char* letter)
         }
         ptr = strtok(NULL, delim);
     }
-    return gs->str;
+    if(strlen(gs->str) == 0)
+        return "∅";
+    char* res = malloc(strlen(gs->str));
+    strcpy(res, gs->str);
+    return res;
 }
+
+int add_element_to_string_array(char*** array, size_t size, char* val)
+{
+    size_t i = 0;
+    char** a = *array;
+    while(i < size)
+    {
+        if(strcmp(a[i], val) == 0)
+        {
+            return 0;
+        }
+        i++;
+    }
+
+    a = realloc(*array, (size + 1) * sizeof(char*));
+    a[size] = val;
+    *array = a;
+
+    return 1;
+}
+
+size_t get_state(char** all_states, char* val, size_t size)
+{
+    size_t i = 0;
+    while(i < size && strcmp(all_states[i], val) != 0)
+    {
+        i++;
+    }
+    return i;
+}
+
+void update_sets(automaton* nfa, automaton* a, char* node, char* origins)
+{
+    char delim[] = "+";
+    char *ptr = strtok(origins, delim);
+
+    while(ptr != NULL)
+    {
+        if(search_set(nfa->initial_states, ptr))
+        {
+            insert_set(&(a->initial_states), node);
+        }
+
+        if(search_set(nfa->final_states, ptr))
+        {
+            insert_set(&(a->final_states), node);
+        }
+        ptr = strtok(NULL, delim);
+    }
+}
+
+void print_fast(char** all_states, size_t size)
+{
+    printf("-------Start--------\n");
+    size_t i = 0;
+    while(i < size)
+    {
+        printf("%s\n", all_states[i]);
+        i++;
+    }
+
+    printf("-------End--------\n");
+}
+
+
 
 automaton* determinize(automaton* nfa)
 {
     automaton* a = new_automaton();
 
     set* q = new_set(4);
-    set* initial_names = new_set(4);
-    set* final_names = new_set(4);
 
     GString* gs = g_string_new("");
     set* inter = nfa->initial_states;
@@ -526,12 +595,56 @@ automaton* determinize(automaton* nfa)
 
     insert_set(&q ,gs->str);
 
+    char** all_states = NULL;
+    inter = nfa->alphabet;
     char* val;
+    char* str;
     while(q->len != 0)
     {
         val = pop_set(q);
+        if(add_element_to_string_array(&all_states, a->order, val) == 1)
+        {
+            add_state_automaton(a);
+        }
 
-        //if(search_set(
+        size_t node = get_state(all_states, val, a->order);
+        if(node == 0)
+        {
+            str = malloc(1);
+        }
+        else
+        {
+            int s = (int)((ceil(log10(node))+1)*sizeof(char));
+            str = malloc(s);
+        }
+        sprintf(str, "%zu", node);
+
+
+        char* test2 = malloc(strlen(val));
+        strcpy(test2, val);
+        update_sets(nfa, a, str, test2);
+
+        for(size_t i = 0; i < inter->capacity; ++i)
+        {
+            data* cur = inter->elements[i]->next;
+            while(cur != NULL)
+            {
+                char* test = malloc(strlen(val));
+                strcpy(test, val);
+                char* succ = get_reachable_states(nfa, test, cur->key);
+                if(add_element_to_string_array(&all_states,
+                            a->order, succ) == 1)
+                {
+                    add_state_automaton(a);
+                    insert_set(&q, succ);
+                }
+
+                size_t node_succ = get_state(all_states, succ, a->order);
+                add_arc_automaton(a, node, node_succ, cur->key);
+                cur = cur->next;
+            }
+        }
+
     }
 
     return a;

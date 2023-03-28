@@ -46,6 +46,9 @@ int main(int argc, char *argv[])
     automaton* p = prune_automaton(nfa);
     print_dot_automaton(p);
 
+    automaton* d = determinize(p);
+    print_dot_automaton(d);
+
     free_automaton(a);
     free_automaton(nfa);
     free_automaton(p);

@@ -68,6 +68,8 @@ int is_useful(automaton* autom, char* origin);
 //Prunes automaton
 automaton* prune_automaton(automaton* autom);
 
+automaton* determinize(automaton* nfa);
+
 //Function that frees an automaton
 void free_automaton(automaton* autom);
 
