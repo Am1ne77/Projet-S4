@@ -1,9 +1,9 @@
 #Makefile for module: Structures
 CC = gcc
 CPPFLAGS = -MMD -g
-CFLAGS = -Wall -Wextra -D _GNU_SOURCE
+CFLAGS = `pkg-config --cflags glib-2.0` -Wall -Wextra -D _GNU_SOURCE
 LDFLAGS =
-LDLIBS = -lm
+LDLIBS = -lm `pkg-config --libs glib-2.0`
 
 SRC = main.c vector.c dict.c set.c automaton.c
 OBJ = $(addsuffix .o, $(basename $(shell find . -name "*.c")))

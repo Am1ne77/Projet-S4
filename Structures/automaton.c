@@ -2,6 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include <err.h>
+#include <gmodule.h>
 #include "set.h"
 #include "dict.h"
 #include "automaton.h"
@@ -452,6 +453,85 @@ automaton* prune_automaton(automaton* autom)
                 add_arc_automaton(a, ne[i], ne[l->arc->end], l->arc->letter);
             }
         }
+    }
+
+    return a;
+}
+
+size_t insert_index(const char* delim, char* s, size_t val)
+{
+    char* p = strtok(s, delim);
+    size_t i = 0;
+    while(p != NULL && (size_t) atoi(p) < val)
+    {
+        i += 1 + strlen(p);
+        p = strtok(NULL, delim);
+    }
+    return i;
+}
+
+char* get_reachable_states(automaton* a, char* origins, char* letter)
+{
+    GString* gs = g_string_new("");
+    char delim[] = "+";
+    char *ptr = strtok(origins, delim);
+    size_t state;
+    int s = (int)((ceil(log10(a->order))+1)*sizeof(char));
+    char str[s];
+    while(ptr != NULL)
+    {
+        state = atoi(ptr);
+        list* l = find_list(a, state)->next_arc;
+        while(l != NULL)
+        {
+            if(l->arc->letter == letter)
+            {
+                char* s = malloc(strlen(gs->str));
+                strcpy(s, gs->str);
+                size_t ins = insert_index(delim, s, l->arc->end);
+
+                sprintf(str, "%zu+", l->arc->end);
+                g_string_insert(gs, ins, str);
+            }
+            l = l->next_arc;
+        }
+        ptr = strtok(NULL, delim);
+    }
+    return gs->str;
+}
+
+automaton* determinize(automaton* nfa)
+{
+    automaton* a = new_automaton();
+
+    set* q = new_set(4);
+    set* initial_names = new_set(4);
+    set* final_names = new_set(4);
+
+    GString* gs = g_string_new("");
+    set* inter = nfa->initial_states;
+    for(size_t i = 0; i < inter->capacity; ++i)
+    {
+        data* cur = inter->elements[i]->next;
+        while(cur != NULL)
+        {
+            char* s = malloc(strlen(gs->str));
+            strcpy(s, gs->str);
+            size_t ins = insert_index("+", s, (size_t) atoi(cur->key));
+            g_string_insert(gs, ins, cur->key);
+            g_string_insert(gs, ins + strlen(cur->key), "+");
+            cur = cur->next;
+        }
+    }
+
+    insert_set(&q ,gs->str);
+
+    char* val;
+    while(q->len != 0)
+    {
+        val = pop_set(q);
+
+        //if(search_set(
     }
 
     return a;
