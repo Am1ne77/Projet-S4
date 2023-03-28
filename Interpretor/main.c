@@ -13,13 +13,13 @@ void print_token(Token *tok, size_t i)
     printf("   parity %lu:\n\n", tok->parity);
 }
 
-void print_token_list(Token **toklist, char *str)
+void print_token_list(Array* arr, char *str)
 {
     printf("String:\n %s\n\n", str);
-    for(size_t i = 0; i < strlen(str); i++)
+    for(size_t i = 0; i < arr->len; i++)
     {
         printf("Char %lu: %c\n", i, str[i]);
-        print_token(toklist[i], i);
+        print_token(queue_dequeue(arr->q), i);
     }
 }
 
@@ -29,13 +29,17 @@ int main(int argc, char *argv[])
     if(argc == 1)
         errx(3, "Not enough arguments");
 
-    char i[10];
-    scanf("%s", i);
-    printf("\n");
+    //char i[10];
+    //scanf("%s", i);
+    //printf("\n");
+
+    //char* s = "(ff)[a-d][78]t";
 
     Array* arr = lexer(argv[1]);
-    print_token_list(arr->start, argv[1]);
+    print_queue(arr->q);
 
+   // print_token_list(arr, s);
+/*
     scanf("%s", i);
     printf("\n");
 
@@ -61,6 +65,6 @@ int main(int argc, char *argv[])
     print_dot_automaton(a);
 
     free_automaton(a);
-
+*/
     return 0;
 }

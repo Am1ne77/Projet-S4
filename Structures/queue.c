@@ -9,6 +9,10 @@ Queue* queue_new()
     Queue* q = calloc(1, sizeof(Queue));
     if(q == NULL)
         errx(EXIT_FAILURE,"queue_new : malloc");
+    q->next = NULL;
+    q->data = NULL;
+
+    return q;
 }
 
 size_t queue_is_empty(Queue *q)
@@ -44,7 +48,7 @@ Token* queue_dequeue(Queue* q)
 
     Queue* oldest = q->next->next;
 
-    if(q->next = oldest)
+    if(q->next == oldest)
         q->next = NULL;
 
     else
@@ -56,10 +60,26 @@ Token* queue_dequeue(Queue* q)
     return t;
 }
 
+Token* queue_peek(Queue* q)
+{
+    if(queue_is_empty(q))
+        errx(EXIT_FAILURE,"dequeue : the queue is empty !");
+
+    return q->next->data;
+
+}
 void queue_destroy(Queue* q)
 {
     while(!queue_is_empty(q))
         queue_dequeue(q);
 
     free(q);
+}
+
+void print_queue(Queue* q)
+{
+    printf("Queue : |");
+    while(!queue_is_empty(q))
+        printf("%c|",queue_dequeue(q)->symbole);
+    printf("\n");
 }

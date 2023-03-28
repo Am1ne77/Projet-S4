@@ -1,3 +1,5 @@
+#include "array.h"
+#include "token.h"
 #include "queue.h"
 #include <string.h>
 #include <stdlib.h>
@@ -6,7 +8,7 @@
 void array_enqueue(Array* arr, Token* t)
 {
     ++arr->len;
-    queue_push(arr->q, t);
+    queue_enqueue(arr->q, t);
 }
 
 Token* array_dequeue(Array* arr)
@@ -18,6 +20,6 @@ Token* array_dequeue(Array* arr)
 
 void arraiy_destroy(Array* arr)
 {
-    queue_destroy(arr->queue);
+    queue_destroy(arr->q);
     free(arr);
 }
