@@ -68,7 +68,11 @@ int is_useful(automaton* autom, char* origin);
 //Prunes automaton
 automaton* prune_automaton(automaton* autom);
 
+size_t insert_index(const char* delim, char* s, size_t val);
+
 automaton* determinize(automaton* nfa);
+
+int accepts(automaton* a, char* origins, char* word);
 
 //Function that frees an automaton
 void free_automaton(automaton* autom);

@@ -636,6 +636,40 @@ automaton* determinize(automaton* nfa)
     return a;
 }
 
+int accepts_from(automaton* a, char* cur_states, char* word)
+{
+    if(strcmp(word, "") == 0)
+    {
+        char delim[] = "+";
+        char *ptr = strtok(cur_states, delim);
+        while(ptr != NULL)
+        {
+            if(search_set(a->final_states, ptr) == 1)
+                return 1;
+            ptr = strtok(NULL, delim);
+        }
+        return 0;
+    }
+    char inter[2] = {};
+    inter[0] = word[0];
+    char* succ = get_reachable_states(a, cur_states, inter);
+    if(strcmp(succ, "∅") == 0)
+        return 0;
+    return accepts_from(a, succ, ++word);
+}
+
+int accepts(automaton* a, char* origins, char* word)
+{
+    char* inter = malloc(strlen(origins));;
+    strcpy(inter, origins);
+    char* inter_word = malloc(strlen(word));
+    strcpy(inter_word, word);
+    int res = accepts_from(a, inter, inter_word);
+    free(inter);
+    free(inter_word);
+    return res;
+}
+
 void free_automaton(automaton* autom)
 {
     free_set(autom->initial_states);
