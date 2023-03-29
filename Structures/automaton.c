@@ -486,7 +486,7 @@ char* get_reachable_states(automaton* a, char* origins, char* letter)
         list* l = find_list(a, state)->next_arc;
         while(l != NULL)
         {
-            if(l->arc->letter == letter)
+            if(strcmp(l->arc->letter, letter) == 0)
             {
                 char* s = malloc(strlen(gs->str));
                 strcpy(s, gs->str);
@@ -555,20 +555,6 @@ void update_sets(automaton* nfa, automaton* a, char* node, char* origins)
         ptr = strtok(NULL, delim);
     }
 }
-
-void print_fast(char** all_states, size_t size)
-{
-    printf("-------Start--------\n");
-    size_t i = 0;
-    while(i < size)
-    {
-        printf("%s\n", all_states[i]);
-        i++;
-    }
-
-    printf("-------End--------\n");
-}
-
 
 
 automaton* determinize(automaton* nfa)
