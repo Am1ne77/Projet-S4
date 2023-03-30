@@ -24,6 +24,11 @@ void* stack_pop(Stack *s)
     return s->data[--s->top];
 }
 
+void* stack_peek(Stack *s)
+{
+    return s->data[s->top-1];
+}
+
 void stack_destroy(Stack *s)
 {
     free(s->data);

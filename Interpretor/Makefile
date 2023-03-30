@@ -2,7 +2,7 @@
 CC = gcc
 
 CFLAGS = -Wall -Wextra -g #-fsanitize=address
-SRC = lexer.c main.c ../Structures/*.c
+SRC = *.c ../Structures/*.c
 
 main:
 	$(CC) $(CFLAGS)  $(SRC) -L ../libs -l:structures.a

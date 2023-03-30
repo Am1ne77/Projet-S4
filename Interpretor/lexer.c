@@ -78,18 +78,35 @@ Array* lexer(char *str)
                             to_add->prioroty = 1;
 
                             array_enqueue(result,to_add);
-                            array_enqueue(result,letter);
+
+                            Token* r = calloc(1,sizeof(Token));
+                            if(r == NULL)
+                                errx(EXIT_FAILURE, "lexer : malloc");
+                            r->tokentype = open_parentheses;
+                            r->symbole = '(';
+                            array_enqueue(result,r);
                             break;
                     }
                 }
-                array_enqueue(result,letter);
+                Token* replace = calloc(1,sizeof(Token));
+                if(replace == NULL)
+                    errx(EXIT_FAILURE, "lexer : malloc");
+                replace->tokentype = open_parentheses;
+                replace->symbole = '(';
+                array_enqueue(result,replace);
                 break;
 
             case CLOSE_BRACKET_ASCII:
                 letter->tokentype = close_bracket;
                 letter->symbole = ']';
                 in_bracket = 0;
-                array_enqueue(result, letter);
+                Token* to_add = calloc(1,sizeof(Token));
+                if(to_add == NULL)
+                    errx(EXIT_FAILURE,"lexer : malloc");
+
+                to_add->tokentype = close_parentheses;
+                to_add->symbole = ')';
+                array_enqueue(result, to_add);
                 break;
 
             case PIPE_ASCII:

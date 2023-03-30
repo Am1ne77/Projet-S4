@@ -33,19 +33,19 @@ int main(int argc, char *argv[])
     //scanf("%s", i);
     //printf("\n");
 
-    //char* s = "(ff)[a-d][78]t";
+ //   char* st = "a.b+c";
 
     Array* arr = lexer(argv[1]);
-    print_queue(arr->q);
+    //print_queue(arr->q);
 
    // print_token_list(arr, s);
 /*
     scanf("%s", i);
     printf("\n");
-
+*/
     Stack *s = shunting_yard(arr);
     stack_display(s);
-
+/*
     printf("\n");
 
     scanf("%s", i);

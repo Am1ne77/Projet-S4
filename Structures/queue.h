@@ -6,7 +6,7 @@
 typedef struct queue
 {
     struct queue* next;
-    Token* data; // Data (array)
+    Token* data;
 } Queue;
 
 Queue* queue_new();
