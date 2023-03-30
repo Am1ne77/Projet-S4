@@ -36,43 +36,14 @@ typedef struct automaton
     list* adjlists;
 }automaton;
 
-//Function that initializes an automaton
-automaton* new_automaton();
+//Returns 1 if the word is accepted by the automaton, 0 otherwise
+int accepts_word(automaton* a, char* origins, char* word);
 
-//Function that adds a state to an automaton
-void add_state_automaton(automaton* autom);
+//Returns + parsed string of the initial states of the automaton
+char* get_origins(automaton* a);
 
-
-//Fonction that adds an arc to an automaton
-void add_arc_automaton(automaton* autom, size_t start, size_t end,
-        char* letter);
-
-//Functtion that uses Thompson algorithm to build an automaton from an AST
-void build_enfa(automaton* autom, btree* regex);
-
-
-//Function that returns a set* of the epsilon closure of a node
-set* get_epsilon_closure(automaton* autom, char* origin);
-
-
-//Function that returns a new autom without epsilon-transitions
-//ENFA to NFA
-automaton* to_nfa(automaton* autom);
-
-//Function that returns the accessible states from origin
-set* get_accessible_states(automaton* autom, char* origin);
-
-//Returns 1 if a state is useful, 0 otherwise
-int is_useful(automaton* autom, char* origin);
-
-//Prunes automaton
-automaton* prune_automaton(automaton* autom);
-
-size_t insert_index(const char* delim, char* s, size_t val);
-
-automaton* determinize(automaton* nfa);
-
-int accepts(automaton* a, char* origins, char* word);
+//Returns the dfa of the ast
+automaton* create_dfa(btree* ast);
 
 //Function that frees an automaton
 void free_automaton(automaton* autom);

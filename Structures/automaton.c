@@ -9,7 +9,7 @@
 #include "btree.h"
 #include "vector.h"
 
-
+//Initializes a new automaton
 automaton* new_automaton()
 {
     //allocating memory space on heap
@@ -31,6 +31,7 @@ automaton* new_automaton()
     return autom;
 }
 
+//Adds a state to the automaton
 void add_state_automaton(automaton* autom)
 {
     //Incrementing automaton size
@@ -66,6 +67,7 @@ list* find_list(automaton* autom, ssize_t index)
     return search;
 }
 
+//Adds an arc to the automaton
 void add_arc_automaton(automaton* autom, size_t start, size_t end,
         char* letter)
 {
@@ -96,25 +98,6 @@ void add_arc_automaton(automaton* autom, size_t start, size_t end,
     l->next_node = NULL;
     search->next_arc = l;
 }
-
-/*void remove_state_automaton(automaton* autom, int state)
-{
-    int s = (int)((ceil(log10(state))+1)*sizeof(char));
-    char str[s];
-    sprintf(str, "%i", state);
-
-    delete_set(autom->initial_states, str);
-    delete_set(autom->final_states, str);
-
-    struct list* l = find_list(autom, (size_t) state - 1);
-
-    if((size_t) state != autom->order - 1)
-        l->next_node = l->next_node->next_node;
-    else
-        l->next_node = NULL;
-
-    autom->order--;
-}*/
 
 //Thompson algorithm that builds the automaton from an the AST regex
 void Thompson(automaton* autom, size_t origin, size_t destination,
@@ -171,6 +154,7 @@ void Thompson(automaton* autom, size_t origin, size_t destination,
     }
 }
 
+//Build enfa from btree
 void build_enfa(automaton* autom, btree* regex)
 {
     add_state_automaton(autom);
@@ -180,6 +164,7 @@ void build_enfa(automaton* autom, btree* regex)
     Thompson(autom, 0, 1, regex);
 }
 
+//Returns set of epsilon closure of a state of the automaton
 set* get_epsilon_closure(automaton* autom, char* origin)
 {
     //Initializing sets
@@ -224,6 +209,7 @@ set* get_epsilon_closure(automaton* autom, char* origin)
     return result;
 }
 
+//Transform a enfa into a nfa
 automaton* to_nfa(automaton* autom)
 {
     //Initialising new automaton
@@ -300,6 +286,7 @@ automaton* to_nfa(automaton* autom)
     return nfa;
 }
 
+//Get accessible states from origin
 set* get_accessible_states(automaton* autom, char* origin)
 {
     //Initializing sets
@@ -458,6 +445,7 @@ automaton* prune_automaton(automaton* autom)
     return a;
 }
 
+//Returns index to insert in + parsed string
 size_t insert_index(const char* delim, char* s, size_t val)
 {
     char* p = strtok(s, delim);
@@ -470,6 +458,7 @@ size_t insert_index(const char* delim, char* s, size_t val)
     return i;
 }
 
+//Returns a + parsed string of the reachable states from the state
 char* get_reachable_states(automaton* a, char* origins, char* letter)
 {
     if(strcmp(origins, "∅") == 0)
@@ -506,6 +495,7 @@ char* get_reachable_states(automaton* a, char* origins, char* letter)
     return res;
 }
 
+//Inserts element in string array
 int add_element_to_string_array(char*** array, size_t size, char* val)
 {
     size_t i = 0;
@@ -556,7 +546,7 @@ void update_sets(automaton* nfa, automaton* a, char* node, char* origins)
     }
 }
 
-
+//Determinize automaton
 automaton* determinize(automaton* nfa)
 {
     automaton* a = new_automaton();
@@ -658,7 +648,7 @@ int accepts_from(automaton* a, char* cur_states, char* word)
     return accepts_from(a, succ, ++word);
 }
 
-int accepts(automaton* a, char* origins, char* word)
+int accepts_word(automaton* a, char* origins, char* word)
 {
     char* inter = malloc(strlen(origins));;
     strcpy(inter, origins);
@@ -668,6 +658,42 @@ int accepts(automaton* a, char* origins, char* word)
     free(inter);
     free(inter_word);
     return res;
+}
+
+char* get_origins(automaton* a)
+{
+    GString* gs = g_string_new("");
+    set* inter = a->initial_states;
+    for(size_t i = 0; i < inter->capacity; ++i)
+    {
+        data* cur = inter->elements[i]->next;
+        while(cur != NULL)
+        {
+            char* s = malloc(strlen(gs->str));
+            strcpy(s, gs->str);
+            size_t ins = insert_index("+", s, (size_t) atoi(cur->key));
+            g_string_insert(gs, ins, cur->key);
+            g_string_insert(gs, ins + strlen(cur->key), "+");
+            cur = cur->next;
+        }
+    }
+    return gs->str;
+}
+
+automaton* create_dfa(btree* ast)
+{
+    automaton* a = new_automaton();
+
+    build_enfa(a, ast);
+    automaton* nfa = to_nfa(a);
+    automaton* p = prune_automaton(nfa);
+    automaton* d = determinize(p);
+
+    free_automaton(a);
+    free_automaton(nfa);
+    free_automaton(p);
+
+    return d;
 }
 
 void free_automaton(automaton* autom)
