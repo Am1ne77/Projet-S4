@@ -315,11 +315,13 @@ set* get_accessible_states(automaton* autom, char* origin)
         {
             l = l->next_arc;
             //Dynamically allocating a string for the node number
-            s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
-            char* str = malloc(s);
+            if(l->arc->end == 0)
+                s = 0;
+            else
+                s = (int)((ceil(log10(l->arc->end))+1)*sizeof(char));
+            char* str = calloc(s, sizeof(char));
 
             sprintf(str, "%zu", l->arc->end);
-
             insert_set(&incoming, str);
         }
     }
@@ -330,13 +332,12 @@ set* get_accessible_states(automaton* autom, char* origin)
 int is_accessible(automaton* autom, char* origin)
 {
     set* ini = autom->initial_states;
-    set* s;
     for(size_t i = 0; i < ini->capacity; ++i)
     {
         data* cur = ini->elements[i]->next;
         while(cur != NULL)
         {
-            s = get_accessible_states(autom, cur->key);
+            set* s = get_accessible_states(autom, cur->key);
             if(search_set(s, origin) == 1)
                 return 1;
             cur = cur->next;
@@ -378,7 +379,7 @@ int is_useful(automaton* autom, char* origin)
 automaton* prune_automaton(automaton* autom)
 {
     set* v = new_set(4);
-    int s = (int)((ceil(log10(autom->order))+1)*sizeof(char));
+    int s = 0;
     ssize_t ne[autom->order];
     size_t count = 0;
 
@@ -386,6 +387,7 @@ automaton* prune_automaton(automaton* autom)
     {
         char str[s];
         sprintf(str, "%zu", i);
+        s = (int)((ceil(log10(i+1))+1)*sizeof(char));
 
         if(is_useful(autom, str) == 0)
         {

@@ -73,11 +73,23 @@ void free_set(set* set)
 // Return 1 if key with hash i is in the set, 0 otherwise
 size_t search_set(set* set, char* key)
 {
-    uint32_t i = hash(key) % (set->capacity);
+    /*uint32_t i = hash(key) % (set->capacity);
+    //printf("%u\n", i);
     for(data* curr = (set->elements[i])->next; curr != NULL; curr = curr->next)
     {
         if(strcmp(key, curr->key) == 0)
             return 1;
+    }
+    return 0;*/
+    for(size_t i = 0; i < set->capacity; ++i)
+    {
+        data* cur = set->elements[i]->next;
+        while(cur != NULL)
+        {
+            if(strcmp(key, cur->key) == 0)
+                return 1;
+            cur = cur->next;
+        }
     }
     return 0;
 }
