@@ -15,7 +15,7 @@ btree* to_ast(Stack* polish)
     ast->child1 = NULL;
     ast->child2 = NULL;
 
-    if(t->tokentype != 10)
+    if(t->tokentype != other)
     {
         btree* child2 = to_ast(polish);
         ast->child2 = child2;

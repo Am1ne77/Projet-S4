@@ -13,6 +13,7 @@
 #define CLOSE_PARENTHESES_ASCII (int) ')'
 #define ADD_ASCII (int) '+'
 #define DASH_ASCII (int) '-'
+#define SPACE_ASCII (int) ' '
 
 Array* lexer(char *str)
 {
@@ -177,6 +178,9 @@ Array* lexer(char *str)
 
                 }
                 break;
+
+//            case SPACE_ASCII:
+//                continue;
 
             default:
                 letter->tokentype = other;

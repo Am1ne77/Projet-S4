@@ -2,6 +2,8 @@
 #define TOKEN_H
 
 #include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
 
 enum tokentype
 {
@@ -15,6 +17,7 @@ enum tokentype
     open_parentheses,
     close_parentheses,
     add,
+    space,
     other
 };
 
@@ -25,5 +28,10 @@ typedef struct token
     size_t parity;
     char   symbole;
 } Token;
+
+
+void print_token(Token *tok, size_t i);
+void print_token_list(Token **toklist, char *str);
+
 
 #endif
