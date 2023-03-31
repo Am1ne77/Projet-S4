@@ -4,6 +4,8 @@
 #include "../Structures/stack.h"
 #include "interpretor.h"
 
+#define COUNT 10
+
 btree* to_ast(Stack* polish)
 {
     Token* t = (Token*) stack_pop(polish);
@@ -83,4 +85,21 @@ void print_ast(btree* ast, size_t offset)
         }
         print_ast(ast->child1,offset);
     }
+}
+
+void print2DUtil(btree* root, int space)
+{
+    if (root == NULL)
+        return;
+
+    space += COUNT;
+
+    print2DUtil(root->child2, space);
+
+    printf("\n");
+    for (int i = COUNT; i < space; i++)
+        printf(" ");
+    printf("%s\n", root->key);
+
+    print2DUtil(root->child1, space);
 }
