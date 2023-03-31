@@ -14,13 +14,13 @@ void print_token(Token *tok, size_t i)
     printf("   parity %lu:\n\n", tok->parity);
 }
 
-void print_token_list(Token **toklist, char *str)
+void print_token_list(Array* arr, char *str)
 {
     printf("String:\n %s\n\n", str);
-    for(size_t i = 0; i < strlen(str); i++)
+    for(size_t i = 0; i < arr->len; i++)
     {
         printf("Char %lu: %c\n", i, str[i]);
-        print_token(toklist[i], i);
+        print_token(queue_dequeue(arr->q), i);
     }
 }
 

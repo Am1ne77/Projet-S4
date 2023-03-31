@@ -14,6 +14,7 @@ Stack* stack_new(size_t capacity);
 size_t stack_is_empty(Stack *s);
 void stack_push(Stack *s, void* v);
 void* stack_pop(Stack *s);
+void* stack_peek(Stack *s);
 void stack_destroy(Stack *s);
 void stack_display(Stack *s);
 

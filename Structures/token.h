@@ -26,10 +26,4 @@ typedef struct token
     char   symbole;
 } Token;
 
-typedef struct array
-{
-    size_t len;
-    Token** start;
-} Array;
-
 #endif

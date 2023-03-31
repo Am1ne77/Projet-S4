@@ -2,57 +2,84 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <err.h>
 
-Queue* queue_new(size_t capacity)
+Queue* queue_new()
 {
-    struct queue* q = malloc(sizeof(Queue));
-    q->capacity = capacity;
-    q->len = 0;
-    q->start = 0;
-    q->end = 0;
-    q->data = malloc(capacity * sizeof(void*));
+    Queue* q = calloc(1, sizeof(Queue));
+    if(q == NULL)
+        errx(EXIT_FAILURE,"queue_new : malloc");
+    q->next = NULL;
+    q->data = NULL;
+
     return q;
 }
 
 size_t queue_is_empty(Queue *q)
 {
-    return q->end == q->start;
+    return q->next == NULL;
 }
 
-void queue_enqueue(Queue* q, void* v)
+void queue_enqueue(Queue* q, Token* t)
 {
-    q->data[q->end++] = v;
-    if (q->end == q->capacity)
-        q->end = 0;
+    Queue* tmp = malloc(sizeof(Queue));
+    if(tmp == NULL)
+        errx(EXIT_FAILURE,"enqueue : malloc");
 
-    q->len++;
+    tmp->data = t;
+
+    if(q->next == NULL) //the queue is empty
+        tmp->next = tmp;
+    
+    else
+    {
+        tmp->next = q->next->next;
+        q->next->next = tmp;
+    }
+
+    q->next = tmp;
 }
 
 
-void* queue_dequeue(Queue* q)
+Token* queue_dequeue(Queue* q)
 {
-    void* v = q->data[q->start++];
-     
-    if (q->start == q->capacity)
-        q->start = 0;
+    if(queue_is_empty(q))
+        errx(EXIT_FAILURE,"dequeue : the queue is empty !");
 
-    q->len--;
-    return v;
+    Queue* oldest = q->next->next;
+
+    if(q->next == oldest)
+        q->next = NULL;
+
+    else
+        q->next->next = oldest->next;
+
+    Token* t = oldest->data;
+    free(oldest);
+
+    return t;
 }
 
-void queue_destroy(struct queue* q)
+Token* queue_peek(Queue* q)
 {
-    free(q->data);
+    if(queue_is_empty(q))
+        errx(EXIT_FAILURE,"dequeue : the queue is empty !");
+
+    return q->next->data;
+
+}
+void queue_destroy(Queue* q)
+{
+    while(!queue_is_empty(q))
+        queue_dequeue(q);
+
     free(q);
 }
 
-void queue_display(Queue *q)
+void print_queue(Queue* q)
 {
-    printf("Queue\nLen: %lu\n[", q->len);
-    for(size_t i = q->start; i != q->end; i = (i+1)%q->capacity)
-    {
-        printf(" %c ", q->data[i]->symbole);
-    }
-    printf("]\n");
+    printf("Queue : |");
+    while(!queue_is_empty(q))
+        printf("%c|",queue_dequeue(q)->symbole);
+    printf("\n");
 }
-
