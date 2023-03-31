@@ -2,6 +2,8 @@
 #define TOKEN_H
 
 #include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
 
 enum tokentype
 {
@@ -32,5 +34,9 @@ typedef struct array
     size_t len;
     Token** start;
 } Array;
+
+void print_token(Token *tok, size_t i);
+void print_token_list(Token **toklist, char *str);
+
 
 #endif

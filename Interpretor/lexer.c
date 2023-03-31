@@ -35,7 +35,7 @@ Array* lexer(char *str)
                 letter->tokentype = dot;
                 letter->symbole = '.';
                 letter->parity = 2;
-                letter->prioroty = 1;
+                letter->prioroty = 2;
                 break;
 
             case INTEROGATION_MARK_ASCII:
@@ -48,7 +48,7 @@ Array* lexer(char *str)
                 letter->tokentype = star;
                 letter->symbole = '*';
                 letter->parity = 1;
-                letter->prioroty = 2;
+                letter->prioroty = 3;
                 break;
                 
             case OPEN_BRACKET_ASCII:
@@ -69,6 +69,7 @@ Array* lexer(char *str)
             case OPEN_PARENTHESES_ASCII:
                 letter->tokentype = open_parentheses;
                 letter->symbole = '(';
+                letter->prioroty = 0;
                 break;
 
             case CLOSE_PARENTHESES_ASCII:
@@ -80,7 +81,7 @@ Array* lexer(char *str)
                 letter->tokentype = add;
                 letter->symbole = '+';
                 letter->parity = 2;
-                letter->prioroty = 0;
+                letter->prioroty = 1;
                 break;
 
 //            case SPACE_ASCII:

@@ -1,5 +1,6 @@
 #include "interpretor.h"
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 
 Stack* shunting_yard (Array* input)
@@ -12,17 +13,18 @@ Stack* shunting_yard (Array* input)
         Token* cur = input->start[i];
         if(cur->tokentype == other)
             stack_push(result, cur);
-/*        
+
         else if(cur->tokentype == close_parentheses)
         {
-            Token* aux = stack_pop(s);
-            while (aux->tokentype != open_parentheses)
+            //Token* aux = stack_pop(s);
+            while (cur->tokentype != open_parentheses)
             {
-                stack_push(result, aux);
-                aux = stack_pop(s);
+                cur = stack_pop(s);
+                stack_push(result, cur);
             }
+            stack_pop(result);
         }
-*/
+
         else
         {
             if(stack_is_empty(s))
@@ -31,6 +33,7 @@ Stack* shunting_yard (Array* input)
             else
             {
                 Token* aux = stack_pop(s);
+    
                 if(cur->prioroty > aux->prioroty)
                 {
                     stack_push(s, aux);
@@ -43,6 +46,10 @@ Stack* shunting_yard (Array* input)
                 }
             }
         }
+        printf("Stack %lu: \n", i);
+        print_token(cur, i);
+        stack_display(s);
+        stack_display(result);
     }
 
     while(! stack_is_empty(s))

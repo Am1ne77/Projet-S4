@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkWindow" id="first_image_area">
+  <object class="GtkWindow" id="first_window">
     <property name="can-focus">False</property>
     <child>
       <object class="GtkPaned">
@@ -10,7 +10,7 @@
         <property name="can-focus">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkImage">
+          <object class="GtkImage" id="first_image_area">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="margin-bottom">46</property>
@@ -68,7 +68,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkWindow" id="second_image_area">
+  <object class="GtkWindow" id="second_window">
     <property name="can-focus">False</property>
     <child>
       <object class="GtkPaned">
