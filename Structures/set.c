@@ -43,7 +43,7 @@ set* new_set(size_t capacity)
     {
         data* sentinel = malloc(sizeof(struct data));
         if(sentinel == NULL)
-        errx(1,"new_set() : Error !");
+            errx(1,"new_set() : Error !");
 
         sentinel->next = NULL;
         set->elements[i] = sentinel;

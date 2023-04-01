@@ -87,6 +87,7 @@ int main(int argc, char** argv)
         .second_page = &second_page,
     };
 
+
     //Connect event handlers.
     g_signal_connect(first_start_button, "clicked", G_CALLBACK(start), &ui);
 
@@ -94,6 +95,8 @@ int main(int argc, char** argv)
 
     g_signal_connect(first_close_button, "clicked", G_CALLBACK(close_window), &ui);
     g_signal_connect(second_close_button, "clicked", G_CALLBACK(close_window), &ui);
+
+    g_signal_connect(second_command_entry, "changed", G_CALLBACK(command), &ui);
 
 
     //Runs the main loop.

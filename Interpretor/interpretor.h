@@ -9,6 +9,7 @@
 #include "../Structures/queue.h"
 #include "../Structures/stack.h"
 #include "../Structures/btree.h"
+#include "../Structures/automaton.h"
 #include "../Structures/array.h"
 
 Array* lexer(char *str);

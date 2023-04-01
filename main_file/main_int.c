@@ -1,5 +1,4 @@
 #include "interpretor.h"
-#include "../Structures/automaton.h"
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -20,6 +20,21 @@ void initialise_text_view(GtkTextView *tv)
     gtk_text_view_set_left_margin(tv, 10);
 }
 
+gboolean sensitive(gpointer user_data)
+{
+    UserInterface *ui = user_data;
+
+    if(strcmp(gtk_entry_get_text(ui->command_entry), "") == 0)
+    {
+        gtk_widget_set_sensitive(GTK_WIDGET(ui->execute_button), FALSE);
+    }
+    else
+    {
+        gtk_widget_set_sensitive(GTK_WIDGET(ui->execute_button), TRUE);
+    }
+    return TRUE;
+}
+
 void start(GtkButton *button, gpointer user_data)
 {
     UserInterface *ui = user_data;
@@ -29,6 +44,7 @@ void start(GtkButton *button, gpointer user_data)
     gtk_widget_hide(GTK_WIDGET(ui->first_page->window));
     gtk_widget_show_all(GTK_WIDGET(ui->current_window));
 
+    sensitive(user_data);
     
     /*
     if (ui->event == 0)
@@ -53,9 +69,34 @@ void execute(GtkButton *button, gpointer user_data)
 {
     UserInterface *ui = user_data;
     const gchar *command = gtk_entry_get_text(ui->command_entry);
+
+    char *argv = g_strdup(command);
+
     GtkTextBuffer *buf;
     buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (ui->fileView_area));
-    gtk_text_buffer_set_text(buf, command, -1);
+
+    char *regex = strtok(argv, " ");
+    char *word = strtok(NULL, " ");
+   
+    Array *arr = lexer(regex);
+    Stack *s = shunting_yard(arr);
+    btree *ast = to_ast(s);
+    automaton *a = create_dfa(ast);
+    char* origins = get_origins(a);
+    int res = accepts_word(a, origins, word);
+   
+    char *str = res == 1? "is accepted" : 
+        "is not accepted";
+    
+    char *r;
+    asprintf(&r, "The word \"%s\" %s in the language \"%s\"\n", word, str, regex);
+   
+    gtk_text_buffer_set_text(buf, r, -1);
     gtk_entry_set_text(ui->command_entry, "");
+}
+
+void command(GtkButton *button, gpointer user_data)
+{
+    sensitive(user_data);
 }
 

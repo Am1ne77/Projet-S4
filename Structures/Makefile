@@ -1,30 +1,22 @@
 #Makefile for module: Structures
 CC = gcc
-CPPFLAGS = -MMD -g
 CFLAGS = `pkg-config --cflags glib-2.0` -Wall -Wextra -D _GNU_SOURCE
-LDFLAGS =
 LDLIBS = -lm `pkg-config --libs glib-2.0`
 
-SRC = main.c vector.c dict.c set.c automaton.c
-OBJ = $(addsuffix .o, $(basename $(shell find . -name "*.c")))
-OBJDIR = ../libs
+SRC = $(shell find . -name "*.c")
+OBJ = $(addsuffix .o, $(basename $(SRC)))
 
-all: archive
-
-struct: ${OBJ}
-	${CC} ${OBJDIR}/* -o main
-
-archive: setup $(OBJ)
-	$(AR) rc ../libs/structures.a $(OBJDIR)/*
-
-%.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
-	mv $@ $(OBJDIR)/
+all: setup $(OBJ)
 
 setup:
-	mkdir -p $(OBJDIR)
+	mkdir -p obj/
 
 clean:
-	rm -rf $(OBJDIR)
-	rm -rf main
+	rm -rf obj/
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+	mv $@ obj/
+
+
 #end

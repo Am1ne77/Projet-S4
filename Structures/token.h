@@ -13,7 +13,7 @@ enum tokentype
     star,
     open_bracket,
     close_bracket,
-    pipe,
+    pipe_op,
     open_parentheses,
     close_parentheses,
     add,

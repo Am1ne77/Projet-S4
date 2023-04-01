@@ -1,0 +1,17 @@
+#Makefile
+CC = gcc 
+CFLAGS = `pkg-config --cflags gtk+-3.0` -Wall -O3 -export-dynamic -g -fsanitize=address
+LDLIBS = `pkg-config --libs gtk+-3.0` -L ../libs -l:structures.a
+
+
+SRC = *.c ../Interpretor/parser.c ../Interpretor/lexer.c ../Interpretor/ast.c 
+DST = main
+
+main: 
+	$(CC) $(SRC) $(CFLAGS) $(LDLIBS) -lm -o $(DST)
+
+clean:
+	${RM} $(DST)
+	${RM} *.o
+
+#end

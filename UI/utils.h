@@ -4,6 +4,9 @@
     if(widget == NULL) exit(1);
 
 #include <gtk/gtk.h>
+#include <string.h>
+#include <gmodule.h>
+#include "../Interpretor/interpretor.h"
 
 typedef struct Page
 {
@@ -38,5 +41,7 @@ void start(GtkButton *button, gpointer user_data);
 void close_window(GtkButton *button, gpointer user_data);
 
 void execute(GtkButton *button, gpointer user_data);
+
+void command(GtkButton *button, gpointer user_data);
 
 #endif

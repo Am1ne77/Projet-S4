@@ -1,15 +1,22 @@
-#Makefile
+#Makefile for module: Structures
 CC = gcc
-CFLAGS = `pkg-config --cflags glib-2.0` -Wall -Wextra -g  #-fsanitize=address
+CFLAGS = `pkg-config --cflags glib-2.0` -Wall -Wextra -D _GNU_SOURCE
+LDLIBS = -L ../libs -l:structures.a
 
-SRC = *.c ../Structures/*.c -lm `pkg-config --libs glib-2.0`
+SRC = $(shell find . -name "*.c")
+OBJ = $(addsuffix .o, $(basename $(SRC)))
 
-main:
-	$(CC) $(CFLAGS)  $(SRC) -L ../libs -l:structures.a
- 
-all: main
+all: setup $(OBJ)
+
+setup:
+	mkdir -p obj/
 
 clean:
-	${RM} *.o 
-	${RM} a.out 
+	rm -rf obj/
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(LDLIBS) $< -o $@
+	mv $@ obj/
+
+
 #end

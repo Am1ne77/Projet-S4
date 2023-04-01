@@ -54,4 +54,11 @@ void print_automaton(automaton* autom);
 //Funciton that prints the dot representation of an automaton
 void print_dot_automaton(automaton* autom);
 
+automaton* new_automaton();
+void build_enfa(automaton* autom, btree* regex);
+
+
+
+
+
 #endif

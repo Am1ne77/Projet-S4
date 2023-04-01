@@ -111,7 +111,7 @@ Array* lexer(char *str)
                 break;
 
             case PIPE_ASCII:
-                letter->tokentype = pipe;
+                letter->tokentype = pipe_op;
                 letter->symbole = '|';
                 array_enqueue(result, letter);
                 break;
