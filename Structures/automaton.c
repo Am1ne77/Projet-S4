@@ -174,11 +174,27 @@ set* get_epsilon_closure(automaton* autom, char* origin)
 
     char* val;
     int s;
+    int stop = 0;
     //We keep on going while the incoming set isn't empty
     while(incoming->len > 0)
     {
+        if(stop == 7 && strcmp("0", origin) == 0)
+            break;
+        stop++;
+
+        if(strcmp("0", origin) == 0)
+        {
+            printf("before");
+            print_set(incoming);
+        }
         //Poping random value from set
         val = pop_set(incoming);
+
+        if(strcmp("0", origin) == 0)
+        {
+            printf("after");
+            print_set(incoming);
+        }
 
         //If node already in result, we continue
         if(search_set(result, val) == 1)
