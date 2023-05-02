@@ -5,7 +5,7 @@
 
 int main()
 {
-    set* set = new_set(5);
+    set* set = new_set(4);
     print_set(set);
 
     char* a = "a er";
@@ -35,10 +35,16 @@ int main()
     char* y = "y ascc";
     char* z = "z qsdsqsd";
 
-    insert_set(&set, a);
+    char* zero = "0";
+
+    insert_set(&set,zero);
+    insert_set(&set,a);
     insert_set(&set,b);
     insert_set(&set,c);
-    //print_set(s);
+
+    /*insert_set(&set, a);
+    insert_set(&set,b);
+    insert_set(&set,c);
     insert_set(&set,d);
     insert_set(&set,e);
     insert_set(&set,f);
@@ -61,11 +67,6 @@ int main()
     insert_set(&set,w);
     insert_set(&set,x);
     insert_set(&set,y);
-    insert_set(&set,z);
-    //print_set(s);
-    /*printf("hkey(%s) = %i\n",c,hash(c));//%(s->capacity));
-    insert_set(&s,e);
-    print_set(s);
-    printf("hkey(%s) = %i\n",c,hash(c));//%(s->capacity));*/
+    insert_set(&set,z);*/
     return 0;
 }
