@@ -42,6 +42,7 @@ int main()
     insert_set(&set,"12");
     insert_set(&set,"10");
 
+    printf("Here\n");
     printf("%i\n", search_set(set, "10"));
 
     delete_set(set, "10");

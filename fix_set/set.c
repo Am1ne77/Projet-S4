@@ -100,13 +100,13 @@ size_t search_set(set* set, char* key)
 // if key already in, nothing is done to the set
 void insert_set(set** set, char* key)
 {
-    uint32_t i = hash(key) % ((*set)->capacity);
-
     if(search_set(*set, key))
         return;
 
     if(100 * (*set)->size / (*set)->capacity >= 75)
         expand_set(set);
+
+    uint32_t i = hash(key) % ((*set)->capacity);
 
     data* new_data = malloc(sizeof(struct data));
     new_data->key = key;

@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra
 LDFLAGS =
 LDLIBS =
 
-SRC = main.c set.c set.h
+SRC = main.c set.c
 OBJ = ${SRC:.c=.o}
 
 main: ${OBJ}
