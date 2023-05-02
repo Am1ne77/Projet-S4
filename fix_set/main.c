@@ -37,10 +37,15 @@ int main()
 
     char* zero = "0";
 
-    insert_set(&set,zero);
-    insert_set(&set,a);
-    insert_set(&set,b);
-    insert_set(&set,c);
+    insert_set(&set,"14");
+    insert_set(&set,"8");
+    insert_set(&set,"12");
+    insert_set(&set,"10");
+
+    printf("%i\n", search_set(set, "10"));
+
+    delete_set(set, "10");
+    print_set(set);
 
     /*insert_set(&set, a);
     insert_set(&set,b);
