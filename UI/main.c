@@ -1,7 +1,6 @@
-#include <gtk/gtk.h>
 #include "utils.h"
 
-int main(int argc, char** argv)
+int main()
 {
     //Initializes GTK.
     gtk_init(NULL, NULL);

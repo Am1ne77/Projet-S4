@@ -35,7 +35,7 @@ gboolean sensitive(gpointer user_data)
     return TRUE;
 }
 
-void start(GtkButton *button, gpointer user_data)
+void start(GtkButton *button __attribute__((unused)), gpointer user_data)
 {
     UserInterface *ui = user_data;
 
@@ -60,12 +60,13 @@ void start(GtkButton *button, gpointer user_data)
     }*/
 }
 
-void close_window(GtkButton *button, gpointer user_data)
+void close_window(GtkButton *button __attribute__((unused)),
+        gpointer user_data __attribute__((unused)))
 {
     gtk_main_quit();
 }
 
-void execute(GtkButton *button, gpointer user_data)
+void execute(GtkButton *button __attribute__((unused)), gpointer user_data)
 {
     UserInterface *ui = user_data;
     const gchar *command = gtk_entry_get_text(ui->command_entry);
@@ -95,7 +96,7 @@ void execute(GtkButton *button, gpointer user_data)
     gtk_entry_set_text(ui->command_entry, "");
 }
 
-void command(GtkButton *button, gpointer user_data)
+void command(GtkButton *button __attribute__((unused)), gpointer user_data)
 {
     sensitive(user_data);
 }

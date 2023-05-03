@@ -6,6 +6,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <gmodule.h>
+#include <math.h>
 #include "../Interpretor/interpretor.h"
 
 typedef struct Page
