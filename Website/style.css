@@ -6,7 +6,7 @@
 body {
     margin: 0;
     background-color: #DECDC6;
-  }
+}
 
 .MainLogo {
   display: block;
@@ -18,117 +18,66 @@ body {
   object-fit: cover;
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
   width: 100vmax;
   background-color: #151C48;
-}
-
-.content {
-  background-color: white;
-  height: 60vmax;
-  width: 90vmax;
-  margin-top: 2vmax;
-  margin-left: 5vmax;
-  border-radius: 25px;
-  text-align: center;
-}
-
-.button-group button {
-  text-align: center;
-  padding: 10px 20px;
-  background-color: transparent;
-  color: #151c48;
-  border: none; 
-  border-radius: 5px;
-  margin: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.button-group button:hover {
-  text-decoration: underline;
-  opacity: 0.7;
-}
-
-.top-left-button button{
-  position: absolute;
-  top: 25px;
-  left: 15px;
-  margin: 10px;
-  background-color: transparent;
-  border: none;
-  color: #DECDC6;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.top-left-button button:hover {
-  text-decoration: underline;
-  opacity: 0.7;
-}
-
-.navbar {
-  overflow: hidden;
-  background-color: #151C48;
-  width: 100%;
-  text-align: center;
-}
-
-.dropbtn {
-  font-size: 24px;
-  border: none;
-  outline: none;
-  color: #DECDC6;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: Arial;
-  font-weight: bold;
-  margin: 0;
-  cursor: pointer;
-}
-
-.navbar-content {
-  display: none;
-  position: absolute;
-  background-color: #DECDC6;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  width: 100%;
-}
-
-.navbar-content button {
-  float: none;
   display: inline-block;
-  text-align: left;
-  width: auto;
+  margin-bottom: 0px;
 }
 
-.navbar button:hover, .navbar-content button:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.navbar:hover .navbar-content {
-  display: block;
+.content{
+  margin-top: 50px;
 }
 
 .content h1 {
   font-size: 50px;
+  text-align: center;
   margin-bottom: 50px;
   font-family: 'up_font', Arial;
   color:#151c48;
 }
 
 .content p {
-  font-size: 23px;
-  text-align: justify;
+  font-size: 20px;
+  text-align: center;
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 20px;
   max-width: 1000px;
   padding: 0 50px;
   font-family: Arial;
+}
+
+ul.topnav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #151c48;
+}
+
+ul.topnav li {float: left;}
+
+ul.topnav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: blue;}
+
+ul.topnav li.right {float: right;}
+
+@media screen and (max-width: 600px) {
+  ul.topnav li.right, 
+  ul.topnav li {float: none;}
 }
