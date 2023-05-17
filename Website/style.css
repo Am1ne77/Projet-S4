@@ -8,11 +8,14 @@ body {
     background-color: #DECDC6;
 }
 
+.title {
+  max-width: 100%;
+}
+
 .MainLogo {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 20%;
   height: 100px;
   width: 300px;
   object-fit: cover;
