@@ -164,3 +164,32 @@ input[type=submit]:hover {
   text-align: center;
   font-size: 3vmin;
 }
+
+.LinkedInAcc {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.groupinfo {
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+}
+
+.badge-base__link.LI-simple-link {
+  margin: 100px;
+}
+
+.contentaboutus {
+  width: 60%;
+  margin-top: 50px;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  max-width: 1000px;
+  padding: 0 50px;
+  font-family: Arial;
+}
