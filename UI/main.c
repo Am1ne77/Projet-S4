@@ -7,7 +7,7 @@ int main()
 
     //Gets the widgets and check if it works.
     GtkBuilder *builder = 
-        gtk_builder_new_from_file("ui.glade");
+        gtk_builder_new_from_file("./UI/ui.glade");
     CHECK(builder);
 
     //Widgets of first window.
