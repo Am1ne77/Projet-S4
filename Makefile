@@ -8,10 +8,10 @@ all: build
 build:
 	cd Structures && $(MAKE)
 	cd Interpretor && $(MAKE)
-	cd UI && $(MAKE)
+	cd replace && $(MAKE)
 
 clean:
 	cd Structures && $(MAKE) clean
 	cd Interpretor && $(MAKE) clean
-	cd UI && $(MAKE) clean
+	cd replace && $(MAKE) clean
 	
