@@ -193,3 +193,25 @@ input[type=submit]:hover {
   padding: 0 50px;
   font-family: Arial;
 }
+
+.documents a:link { text-decoration: none; }
+.documents a:visited { text-decoration: none; }
+.documents a:hover { text-decoration: none; }
+.documents a:active { text-decoration: none; }
+
+.documents a {
+  color: white;
+}
+
+.fa.fa-download {
+  background-color: #151c48;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.fa.fa-download:hover {
+  background-color: blue;
+}
