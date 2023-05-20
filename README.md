@@ -27,7 +27,7 @@ $ ./underperl
 - '+' : the or operator
 - '.' or nothing : the and operator
 - '*' : Kleene Star 
-- [start - end] : exactly one characters form all characters in alphabetical order form the start character to the end character
+- [start - end] : exactly one of the characters form all characters in alphabetical order form the start character to the end character
 
 ## Contributors
 
