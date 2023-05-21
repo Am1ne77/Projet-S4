@@ -8,12 +8,10 @@
 #include "../Interpretor/interpretor.h"
 //#include <fcntl.h>
 
+int in(char c, char* s);
+
+char* get_word(char* string, char* delim, size_t* i, size_t n);
+
 void replace(char* file_path, char* pattern, char* new_word);
-
-int get_pattern(char* line, ssize_t len_line, char* pattern, size_t* len_pattern);
-
-//char* get_name(char* path);
-
-void insert_string(char* dest, char* src, size_t len_dest, size_t len_src);
 #endif
 
