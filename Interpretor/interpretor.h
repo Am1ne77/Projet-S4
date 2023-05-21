@@ -11,6 +11,7 @@
 #include "../Structures/btree.h"
 #include "../Structures/automaton.h"
 #include "../Structures/array.h"
+#include "../Structures/list.h"
 
 Array* lexer(char *str);
 Stack* shunting_yard(Array* input);
