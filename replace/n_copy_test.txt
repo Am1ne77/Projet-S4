@@ -1,3 +1,0 @@
-ici tous les mots qui commencent et par a et comportent des chiffres.
-a123 b45 aa1 a12A a1 a 56 a9999098
-

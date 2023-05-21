@@ -1,3 +1,0 @@
-ceci est un fichier test.
-on regarde si le mot fin est remplacé par grand.
-fin du fichier.

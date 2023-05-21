@@ -127,7 +127,7 @@ linked_list* find(char* file_path, char* pattern, char* delim)
             if(accepts_word(a,get_origins(a),word))
             {
                 size_t data1 = line_nb;
-                char* data2 = x(line, start, i-1);
+                char* data2 = get_substring(line, start, i-1);
                 insert_list(res, data1, data2);
             }
             start = i;
@@ -142,7 +142,7 @@ linked_list* find(char* file_path, char* pattern, char* delim)
     return res;
 }
 
-char* x(char* s, size_t start, size_t end)
+char* get_substring(char* s, size_t start, size_t end)
 {
     size_t j = 0;
     char* res = malloc(sizeof(char)*(start+end-1));
