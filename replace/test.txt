@@ -1,3 +1,3 @@
-ceci est un fichier test.   fin
-grand on regarde si le mot grand est remplacé grand par grand fin.
-du fichier.
+grand
+grand on regarde si le mot grand est remplacé grand par grand fin
+grand du fichier.
