@@ -4,7 +4,7 @@
 linked_list* new_list()
 {
     linked_list* list = malloc(sizeof(linked_list));
-    list->data1 = NULL;
+    list->data1 = 0;
     list->data2 = NULL;
     list->next = NULL;
 

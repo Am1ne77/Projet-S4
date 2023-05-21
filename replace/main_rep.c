@@ -8,15 +8,20 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc > 5)
+    if(argc != 5)
         errx(EXIT_FAILURE,"failure");
 
-    char* pattern = "a[0-9]*";
-    char* new_word = "X";
+    char* file_path = argv[2];
+    char* pattern = argv[3];
+    char* new_word = argv[4];
+    char* delim = " \n\r,;./:!?'\"()[]\\{}";
 
-    //replace(argv[1],pattern, new_word);
-    
-    display(find("test.txt",pattern));
+    if(strcmp(argv[1],"-r") == 0)
+        replace(file_path, pattern, new_word, delim);
+    else if (strcmp(argv[1], "-f") == 0)
+        display(find("test.txt",pattern, delim));
+    else
+        errx(EXIT_FAILURE, "wrong argument (try -r to replace or -f to find)");
     return 0;
 }
 
@@ -39,7 +44,6 @@ char* get_word(char* string, char* delim, size_t* i, size_t n)
         res[j] = string[*i];
         ++j;
         ++(*i);
-        //printf("here\n");
     }
     if(j == 0)
     {
@@ -55,12 +59,11 @@ char* get_word(char* string, char* delim, size_t* i, size_t n)
     return res;
 }
 
-void replace(char* file_path, char* pattern, char* new_word)
+void replace(char* file_path, char* pattern, char* new_word, char* delim)
 {
     FILE* file;
     FILE* tmp_file;
 
-    char* delim = " .\n";
     char* word;
     char* line = NULL;
     size_t line_size = 0;
@@ -82,7 +85,6 @@ void replace(char* file_path, char* pattern, char* new_word)
         while(word != NULL){
             fputs(accepts_word(a,get_origins(a),word) ? new_word : word,tmp_file);
             word = get_word(line, delim, &i, len);
-            //printf("there\n");
         }
         i = 0;
     }
@@ -95,11 +97,10 @@ void replace(char* file_path, char* pattern, char* new_word)
 
 }
 
-linked_list* find(char* file_path, char* pattern)
+linked_list* find(char* file_path, char* pattern, char* delim)
 {
     FILE* file;
 
-    char* delim = " .\n";
     char* word;
     char* line = NULL;
     size_t line_size = 0;
