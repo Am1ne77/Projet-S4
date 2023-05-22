@@ -1,5 +1,7 @@
 #ifndef _MAIN_REP_H_
 #define _MAIN_REP_H_
+#define DELIM " \n\r,;./:!?'\"()[]\\{}"
+
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -130,6 +130,8 @@ int main()
     g_signal_connect(first_close_button, "clicked", G_CALLBACK(close_window), &ui);
     g_signal_connect(second_close_button, "clicked", G_CALLBACK(close_window), &ui);
 
+    g_signal_connect(second_fileInput_button, "file-set", G_CALLBACK(new_file), &ui);
+
     g_signal_connect(second_command_entry, "changed", G_CALLBACK(command), &ui);
     g_signal_connect(second_word_entry, "changed", G_CALLBACK(command), &ui);
 

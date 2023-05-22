@@ -103,14 +103,19 @@ void execute(GtkButton *button __attribute__((unused)), gpointer user_data)
 void execute_file(gpointer user_data, char *regex, char *word)
 {
     UserInterface *ui = user_data;
-    char *r;
-    asprintf(&r, "The file path is \"%s\"", ui->filename);
 
     GtkTextBuffer *buf;
     buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (ui->fileView_area));
 
+    gchar* contents = NULL;
+    gsize length = 0;
+    GError* error = NULL;
 
-    gtk_text_buffer_set_text(buf, r, -1);
+    display(find(ui->filename, regex, DELIM));
+    replace(ui->filename, regex, word, DELIM);
+    g_file_get_contents(ui->filename, &contents, &length, &error);
+
+    gtk_text_buffer_set_text(buf, contents, -1);
 
 }
 
@@ -174,6 +179,27 @@ void next_command(GtkButton *button __attribute__((unused)), gpointer user_data)
     ui->command_i++;
     histo_sensi(user_data);
     gtk_entry_set_text(ui->command_entry, ui->command_histo->data[ui->command_i]);
+}
+
+
+void new_file(GtkButton *button __attribute__((unused)), gpointer user_data)
+{
+    UserInterface *ui = user_data;
+    ui->filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(ui->file_input));
+
+
+    GtkTextBuffer *buf;
+    buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (ui->fileView_area));
+
+    gchar* contents = NULL;
+    gsize length = 0;
+    GError* error = NULL;
+
+
+    g_file_get_contents(ui->filename, &contents, &length, &error);
+
+    gtk_text_buffer_set_text(buf, contents, -1);
+
 }
 
 

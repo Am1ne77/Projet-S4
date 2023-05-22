@@ -77,6 +77,8 @@ void next_word(GtkButton *button, gpointer user_data);
 
 void next_command(GtkButton *button, gpointer user_data);
 
+void new_file(GtkButton *button, gpointer user_data);
+
 void histo_sensi(gpointer user_data);
 
 #endif
