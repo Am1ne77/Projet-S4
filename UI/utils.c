@@ -31,7 +31,10 @@ gboolean sensitive(gpointer user_data)
 {
     UserInterface *ui = user_data;
 
-    if(strcmp(gtk_entry_get_text(ui->command_entry), "") == 0 ||
+    if(ui->f && !ui->r && strcmp(gtk_entry_get_text(ui->command_entry), "") != 0 )
+        gtk_widget_set_sensitive(GTK_WIDGET(ui->execute_button), TRUE);
+
+    else if(strcmp(gtk_entry_get_text(ui->command_entry), "") == 0 ||
     strcmp(gtk_entry_get_text(ui->word_entry), "") == 0) 
     {
         gtk_widget_set_sensitive(GTK_WIDGET(ui->execute_button), FALSE);
@@ -159,7 +162,7 @@ void execute_file(gpointer user_data, char *regex, char *word)
     }
 
     else
-       gtk_text_buffer_set_text(buf, "You have to choose an action: find, replace or both!", -1);
+       gtk_text_buffer_set_text(buf, "Vous devez choisir choisir au moins une action parmis \"replace\" et \"find\"", -1);
 
 }
 
@@ -254,13 +257,14 @@ void find_fct(GtkButton *button __attribute__((unused)), gpointer user_data)
 {
     UserInterface *ui = user_data;
     ui->f = gtk_toggle_button_get_active(ui->find_button)? 1:0;
+    sensitive(user_data);
 }
 
 void replace_fct(GtkButton *button __attribute__((unused)), gpointer user_data)
 {
     UserInterface *ui = user_data;
     ui->r = gtk_toggle_button_get_active(ui->replace_button)? 1:0;
-
+    sensitive(user_data);
 }
 
 void histo_sensi(gpointer user_data)
