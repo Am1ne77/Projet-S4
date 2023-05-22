@@ -8,11 +8,13 @@ all: build
 build:
 	cd Structures && $(MAKE)
 	cd Interpretor && $(MAKE)
+	cd replace && $(MAKE)
 	cd UI && $(MAKE)
-	${CC} ./Structures/obj/* ./Interpretor/obj/* ./UI/obj/* $(CFLAGS) $(LDLIBS) ./UI/main.c -o underperl
+	${CC} ./Structures/obj/* ./Interpretor/obj/* ./replace/obj/* ./UI/obj/* $(CFLAGS) $(LDLIBS) ./UI/main.c -o underperl
 
 clean:
 	cd Structures && $(MAKE) clean
 	cd Interpretor && $(MAKE) clean
+	cd replace && $(MAKE) clean
 	cd UI && $(MAKE) clean
 	${RM} underperl

@@ -9,6 +9,7 @@
 #include <gmodule.h>
 #include <math.h>
 #include "../Interpretor/interpretor.h"
+#include "../replace/replace.h"
 
 typedef struct Page
 {
