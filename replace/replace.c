@@ -140,7 +140,13 @@ void display(linked_list* l)
     FILE* file;
     file = fopen("bin/res","w+");
 
+
     linked_list* p = l->next;
+    
+    if(p == NULL){
+        fprintf(file, "Aucune occurence du motif trouvée dans le fichier...");
+    }
+    
     while(p != NULL)
     {
         size_t data1 = (size_t)p->data1;
