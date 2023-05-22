@@ -126,7 +126,7 @@ linked_list* find(char* file_path, char* pattern, char* delim)
 char* get_substring(char* s, size_t start, size_t end)
 {
     size_t j = 0;
-    char* res = malloc(sizeof(char)*(start+end-1));
+    char* res = malloc(sizeof(char)*(end-start+2));
     for(size_t i = start; i <= end; ++i){
         res[j] = s[i];
         ++j;
@@ -137,12 +137,17 @@ char* get_substring(char* s, size_t start, size_t end)
 
 void display(linked_list* l)
 {
+    FILE* file;
+    file = fopen("res","w");
+
     linked_list* p = l->next;
     while(p != NULL)
     {
         size_t data1 = (size_t)p->data1;
         char* data2 = (char*)p->data2;
-        printf("line %li: %s\n",data1,data2);
+        fprintf(file,"line %li: %s\n",data1,data2);
         p = p->next;
     }
+    fclose(file);
+    rename("res","../bin/res");
 }
