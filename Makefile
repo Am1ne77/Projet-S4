@@ -18,3 +18,4 @@ clean:
 	cd replace && $(MAKE) clean
 	cd UI && $(MAKE) clean
 	${RM} underperl
+	${RM} -rf bin 

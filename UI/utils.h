@@ -24,9 +24,10 @@ typedef struct Page
     GtkButton *last_word;
     GtkButton *last_command;
     GtkButton *next_word;
+    GtkToggleButton *find_button;
+    GtkToggleButton *replace_button;
     GtkButton *next_command;
-
-   GtkFileChooserButton *file_input;
+    GtkFileChooserButton *file_input;
 } Page;
 
 typedef struct UserInterface
@@ -50,8 +51,12 @@ typedef struct UserInterface
     GtkButton *last_command;
     GtkButton *next_word;
     GtkButton *next_command;
+    GtkToggleButton *find_button;
+    GtkToggleButton *replace_button;
     gchar *filename; 
-    guint event;
+    int f;
+    int r;
+
 
 } UserInterface;
 
@@ -78,6 +83,10 @@ void next_word(GtkButton *button, gpointer user_data);
 void next_command(GtkButton *button, gpointer user_data);
 
 void new_file(GtkButton *button, gpointer user_data);
+
+void find_fct(GtkButton *button, gpointer user_data);
+
+void replace_fct(GtkButton *button, gpointer user_data);
 
 void histo_sensi(gpointer user_data);
 

@@ -138,7 +138,7 @@ char* get_substring(char* s, size_t start, size_t end)
 void display(linked_list* l)
 {
     FILE* file;
-    file = fopen("res","w");
+    file = fopen("bin/res","w+");
 
     linked_list* p = l->next;
     while(p != NULL)
@@ -149,5 +149,5 @@ void display(linked_list* l)
         p = p->next;
     }
     fclose(file);
-    rename("res","../bin/res");
+    //rename("res","../bin/res");
 }

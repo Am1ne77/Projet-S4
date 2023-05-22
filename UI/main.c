@@ -1,7 +1,10 @@
 #include "utils.h"
+#include "sys/stat.h"
 
 int main()
 {
+    mkdir("bin", 0777);
+
     //Initializes GTK.
     gtk_init(NULL, NULL);
 
@@ -51,6 +54,14 @@ int main()
     GtkButton *second_next_word = 
         GTK_BUTTON(gtk_builder_get_object(builder, "second_next_word"));
     CHECK(second_next_word);
+
+    GtkToggleButton *second_find = 
+        GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "second_find_toggleButton"));
+    CHECK(second_find);
+
+    GtkToggleButton *second_replace = 
+        GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "second_replace_toggleButton"));
+    CHECK(second_replace);
 
     GtkFileChooserButton *second_fileInput_button = 
         GTK_FILE_CHOOSER_BUTTON(gtk_builder_get_object(builder, "second_fileInput_button"));
@@ -104,6 +115,8 @@ int main()
         .last_command = second_last_command,
         .next_word = second_next_word,
         .next_command = second_next_command,
+        .find_button = second_find,
+        .replace_button = second_replace,
     };
 
     UserInterface ui = 
@@ -121,6 +134,8 @@ int main()
     gtk_widget_set_sensitive(GTK_WIDGET(second_page.next_command), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(second_page.last_word), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(second_page.last_command), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.find_button), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.replace_button), FALSE);
 
     //Connect event handlers.
     g_signal_connect(first_start_button, "clicked", G_CALLBACK(start), &ui);
@@ -135,6 +150,8 @@ int main()
     g_signal_connect(second_command_entry, "changed", G_CALLBACK(command), &ui);
     g_signal_connect(second_word_entry, "changed", G_CALLBACK(command), &ui);
 
+    g_signal_connect(second_find, "toggled", G_CALLBACK(find_fct), &ui);
+    g_signal_connect(second_replace, "toggled", G_CALLBACK(replace_fct), &ui);
 
     g_signal_connect(second_next_word, "clicked", G_CALLBACK(next_word), &ui);
     g_signal_connect(second_next_command, "clicked", G_CALLBACK(next_command), &ui);

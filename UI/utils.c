@@ -15,6 +15,8 @@ void new_window(Page *newpage, gpointer user_data)
     ui->last_command = newpage->last_command;
     ui->next_word = newpage->next_word;
     ui->next_command = newpage->next_command;
+    ui->find_button = newpage->find_button;
+    ui->replace_button = newpage->replace_button;
 }
 
 void initialise_text_view(GtkTextView *tv)
@@ -97,6 +99,11 @@ void execute(GtkButton *button __attribute__((unused)), gpointer user_data)
     gtk_widget_set_sensitive(GTK_WIDGET(ui->next_command), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(ui->last_word), TRUE);
     gtk_widget_set_sensitive(GTK_WIDGET(ui->last_command), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(ui->find_button), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(ui->replace_button), FALSE);
+
+    gtk_toggle_button_set_active(ui->find_button, FALSE);
+    gtk_toggle_button_set_active(ui->replace_button, FALSE);
 
 }
 
@@ -111,11 +118,48 @@ void execute_file(gpointer user_data, char *regex, char *word)
     gsize length = 0;
     GError* error = NULL;
 
-    display(find(ui->filename, regex, DELIM));
-    replace(ui->filename, regex, word, DELIM);
-    g_file_get_contents(ui->filename, &contents, &length, &error);
+    if(ui->f && ui->r)
+    {
+        GtkTextIter iter;
+        gtk_text_buffer_set_text(buf, "Find:\n\n", -1);
+        gtk_text_buffer_get_end_iter(buf, &iter);
 
-    gtk_text_buffer_set_text(buf, contents, -1);
+        display(find(ui->filename, regex, DELIM));
+        g_file_get_contents("bin/res", &contents, &length, &error);
+        gtk_text_buffer_insert(buf, &iter, contents, -1);
+
+        gtk_text_buffer_get_end_iter(buf, &iter);
+        gtk_text_buffer_insert(buf, &iter, "\nReplace:\n\n", -1);
+
+        gtk_text_buffer_get_end_iter(buf, &iter);
+        replace(ui->filename, regex, word, DELIM);
+        g_file_get_contents(ui->filename, &contents, &length, &error);
+        gtk_text_buffer_insert(buf, &iter, contents, -1);
+    }
+    else if(ui->f)
+    {
+        GtkTextIter iter;
+        gtk_text_buffer_set_text(buf, "Find:\n\n", -1);
+        gtk_text_buffer_get_end_iter(buf, &iter);
+
+        display(find(ui->filename, regex, DELIM));
+        g_file_get_contents("bin/res", &contents, &length, &error);
+        gtk_text_buffer_insert(buf, &iter, contents, -1);
+    }
+    else if(ui->r)
+    {
+        GtkTextIter iter;
+        gtk_text_buffer_set_text(buf, "\nReplace:\n\n", -1);
+        gtk_text_buffer_get_end_iter(buf, &iter);
+
+        replace(ui->filename, regex, word, DELIM);
+        g_file_get_contents(ui->filename, &contents, &length, &error);
+        gtk_text_buffer_insert(buf, &iter, contents, -1);
+
+    }
+
+    else
+       gtk_text_buffer_set_text(buf, "You have to choose an action: find, replace or both!", -1);
 
 }
 
@@ -188,6 +232,10 @@ void new_file(GtkButton *button __attribute__((unused)), gpointer user_data)
     ui->filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(ui->file_input));
 
 
+    gtk_widget_set_sensitive(GTK_WIDGET(ui->find_button), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(ui->replace_button), TRUE);
+
+
     GtkTextBuffer *buf;
     buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (ui->fileView_area));
 
@@ -202,6 +250,18 @@ void new_file(GtkButton *button __attribute__((unused)), gpointer user_data)
 
 }
 
+void find_fct(GtkButton *button __attribute__((unused)), gpointer user_data)
+{
+    UserInterface *ui = user_data;
+    ui->f = gtk_toggle_button_get_active(ui->find_button)? 1:0;
+}
+
+void replace_fct(GtkButton *button __attribute__((unused)), gpointer user_data)
+{
+    UserInterface *ui = user_data;
+    ui->r = gtk_toggle_button_get_active(ui->replace_button)? 1:0;
+
+}
 
 void histo_sensi(gpointer user_data)
 {
