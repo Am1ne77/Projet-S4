@@ -36,6 +36,22 @@ int main()
         GTK_BUTTON(gtk_builder_get_object(builder, "second_close_button"));
     CHECK(second_close_button);
 
+    GtkButton *second_last_command = 
+        GTK_BUTTON(gtk_builder_get_object(builder, "second_last_command"));
+    CHECK(second_last_command);
+
+    GtkButton *second_next_command = 
+        GTK_BUTTON(gtk_builder_get_object(builder, "second_next_command"));
+    CHECK(second_next_command);
+
+    GtkButton *second_last_word = 
+        GTK_BUTTON(gtk_builder_get_object(builder, "second_last_word"));
+    CHECK(second_last_word);
+
+    GtkButton *second_next_word = 
+        GTK_BUTTON(gtk_builder_get_object(builder, "second_next_word"));
+    CHECK(second_next_word);
+
     GtkFileChooserButton *second_fileInput_button = 
         GTK_FILE_CHOOSER_BUTTON(gtk_builder_get_object(builder, "second_fileInput_button"));
     CHECK(second_fileInput_button);
@@ -43,6 +59,10 @@ int main()
     GtkEntry *second_command_entry = 
         GTK_ENTRY(gtk_builder_get_object(builder, "second_command_entry"));
     CHECK(second_command_entry);
+
+    GtkEntry *second_word_entry = 
+        GTK_ENTRY(gtk_builder_get_object(builder, "second_word_entry"));
+    CHECK(second_word_entry);
 
     GtkButton *second_execute_button = 
         GTK_BUTTON(gtk_builder_get_object(builder, "second_execute_button"));
@@ -77,15 +97,30 @@ int main()
         .close_button = second_close_button,
         .execute_button = second_execute_button,
         .command_entry = second_command_entry,
+        .word_entry = second_word_entry,
         .fileView_area = second_fileView_area,
+        .file_input = second_fileInput_button,
+        .last_word = second_last_word,
+        .last_command = second_last_command,
+        .next_word = second_next_word,
+        .next_command = second_next_command,
     };
 
     UserInterface ui = 
     {
         .first_page = &first_page,
         .second_page = &second_page,
+        .command_histo = vector_new(),
+        .word_histo = vector_new(),
+        .command_i = 0,
+        .word_i = 0,
     };
 
+
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.next_word), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.next_command), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.last_word), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(second_page.last_command), FALSE);
 
     //Connect event handlers.
     g_signal_connect(first_start_button, "clicked", G_CALLBACK(start), &ui);
@@ -96,7 +131,13 @@ int main()
     g_signal_connect(second_close_button, "clicked", G_CALLBACK(close_window), &ui);
 
     g_signal_connect(second_command_entry, "changed", G_CALLBACK(command), &ui);
+    g_signal_connect(second_word_entry, "changed", G_CALLBACK(command), &ui);
 
+
+    g_signal_connect(second_next_word, "clicked", G_CALLBACK(next_word), &ui);
+    g_signal_connect(second_next_command, "clicked", G_CALLBACK(next_command), &ui);
+    g_signal_connect(second_last_word, "clicked", G_CALLBACK(last_word), &ui);
+    g_signal_connect(second_last_command, "clicked", G_CALLBACK(last_command), &ui);
 
     //Runs the main loop.
     gtk_main(); 

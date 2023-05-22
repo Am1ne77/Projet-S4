@@ -7,7 +7,7 @@ typedef struct vector
 {
     size_t capacity;
     size_t size;
-    int *data;
+    char **data;
 }vector;
 
 // Create a new vector.
@@ -30,35 +30,35 @@ void double_capacity(struct vector *v);
 // Append x at the end of a vector.
 // According to the size of the vector,
 // we may multiply its capacity by two.
-void vector_push(struct vector *v, int x);
+void vector_push(struct vector *v, char *x);
 
 // Remove and return the last element of a vector.
 // - If the vector is not empty, the last element
 //   is removed from the vector, its value is stored in x,
 //   and the function returns true (1).
 // - Otherwise the function returns false (0).
-int vector_pop(struct vector *v, int *x);
+int vector_pop(struct vector *v, char *x);
 
 // Get the value at the i index.
 // - If the i index is not out of bound,
 //   the i-index element is stored in x,
 //   and the function returns true (1).
 // - Otherwise the function returns false (0).
-int vector_get(struct vector *v, size_t i, int *x);
+int vector_get(struct vector *v, size_t i, char *x);
 
 // Insert x in the vector at the i-index position.
 // The i index must be between 0 and v->size (included).
 // According to the size of the vector,
 // we may multiply its capacity by two.
 // If the i index is out of bound, we do nothing.
-void vector_insert(struct vector *v, size_t i, int x);
+void vector_insert(struct vector *v, size_t i, char *x);
 
 // Remove and return the i-index element of a vector.
 // - If the i index is not out of bound,
 //   the i-index element is removed, its value is stored in x,
 //   and the function returns true (1).
 // - Otherwise the function returns false (0).
-int vector_remove(struct vector *v, size_t i, int *x);
+int vector_remove(struct vector *v, size_t i, char *x);
 
 // Prints the vector v
 void vector_print(struct vector* v);

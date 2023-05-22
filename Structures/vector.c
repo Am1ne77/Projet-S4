@@ -8,7 +8,7 @@ struct vector *vector_new()
     v = malloc(sizeof(struct vector));
     v->capacity = 1;
     v->size = 0;
-    v->data = malloc(sizeof(int));
+    v->data = malloc(sizeof(char*));
     return v;
 }
 
@@ -20,37 +20,38 @@ void vector_free(struct vector *v)
 
 void double_capacity(struct vector *v)
 {
-    v->data = realloc(v->data, 2 * v->capacity * sizeof(int));
+    v->data = realloc(v->data, 2 * v->capacity * sizeof(char*));
     if(v->data == NULL)
         errx(1, "Not enough memory!");
     v->capacity *= 2;
 }
 
-void vector_push(struct vector *v, int x)
+void vector_push(struct vector *v, char *x)
 {
     if(v->capacity == v->size)
         double_capacity(v);
     v->data[v->size++] = x;
 }
 
-int vector_pop(struct vector *v, int *x)
+int vector_pop(struct vector *v, char *x)
 {
     if(v->size == 0)
         return 0;
-    *x = v->data[v->size - 1];
+    if(x != NULL)
+        *x = *v->data[v->size - 1];
     v->size--;
     return 1;
 }
 
-int vector_get(struct vector *v, size_t i, int *x)
+int vector_get(struct vector *v, size_t i, char *x)
 {
     if(i >= v->size)
         return 0;
-    *x = v->data[i];
+    *x = *v->data[i];
     return 1;
 }
 
-void vector_insert(struct vector *v, size_t i, int x)
+void vector_insert(struct vector *v, size_t i, char *x)
 {
     if(i > v->size)
         return;
@@ -68,11 +69,11 @@ void vector_insert(struct vector *v, size_t i, int x)
     v->size++;
 }
 
-int vector_remove(struct vector *v, size_t i, int *x)
+int vector_remove(struct vector *v, size_t i, char *x)
 {
     if(i >= v->size)
         return 0;
-    *x = v->data[i];
+    *x = *v->data[i];
     while(i < v->size - 1)
     {
         v->data[i] = v->data[i + 1];
@@ -87,7 +88,7 @@ void vector_print(struct vector* v)
     printf("[ ");
     for(size_t i = 0; i < v->size; i++)
     {
-        printf("%i ", v->data[i]);
+        printf("%s ", v->data[i]);
     }
     printf("]\n");
 }
