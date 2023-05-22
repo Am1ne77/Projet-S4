@@ -30,6 +30,7 @@ libs
 *.dylib
 
 # Executables
+underperl
 main
 *.exe
 *.out
